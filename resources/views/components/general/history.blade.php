@@ -1,0 +1,10 @@
+<div class="col-lg-6">
+    <h3 class="text-gradient text-primary mb-0 mt-2">About us</h3>
+    <h3 class="d-none"></h3>
+    <p>{{ env('APP_NAME') }} Inc. was founded in December 2016 as a peer-to-peer Bitcoin exchange, offering digital asset trading services to users around the world. It started out as a lending platform for Bitcoin and later added support for more cryptocurrencies.</p>
+    <p>We are  focused on maximizing profitability with minimum risk. Our Platform combines a pool of investors' assets that are managed by professionals in the interests of investors. We use modern trading strategies, which include a variety of means of generating profit (currency trading, securities, exchange transactions, etc).
+    </p>
+    <p>Our company provides a stable profit using effective tools and opportunities. We collaborate with popular brands and have privileged conditions (lower interest rates, insider information). Due to this, we diversify the funds and ensure a stable profit for our investors. It was developed under the control of an experienced team of highly qualified financial experts and professional traders for private highly profitable online investments. We are very proud to state that our clientele base cuts across financial institutions, individuals, and several other corporate institutions. We are determined to provide the best service to our clients and deliver a very lucrative source of income to our investors.
+</p>
+    <p>Here at {{ env('APP_NAME') }}, our goal is to promote the financial status of our clients through our uncompromised financial automated forex and binary software. expatrades-investment.com trading platform is an Award winning forex Automated trader, providing trading services and financial support for both retail and institutional clients through its policy of providing the best trading signals, softwares and strategies for investors, we offer both professionals and new beginners opportunity to invest and earn from Forex and Binary options trade.</p>
+</div>
