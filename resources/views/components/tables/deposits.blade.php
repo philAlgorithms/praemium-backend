@@ -50,7 +50,7 @@
                     	<td class="text-xs font-weight-bold w-50">
                       	    <div class="d-flex align-items-center">
 				<img src="{{ cryptoSvgColor($deposit->benefactorWallet->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
-                        	<span class="text-truncate">{{ $deposit->benefactorWallet->wallet_address }}</span>
+                        	<span class="text-truncate">{{ $deposit->benefactorWallet->address }}</span>
                       	    </div>
                     	</td>
 

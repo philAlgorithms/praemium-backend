@@ -21,7 +21,7 @@
                 <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Full Name:</strong> &nbsp; {{ $client->name }}</li>
                 <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Mobile:</strong> &nbsp; {{ $client->phone_number }}</li>
                 <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a1c0cdc4c2d5c9ceccd1d2cecfe1ccc0c8cd8fc2cecc">{{ $client->email }}</a></li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Location:</strong> &nbsp; {{ $client->id }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Location:</strong> &nbsp; {{ $client->country->nicename ?? 'N/A' }}</li>
                 <li class="list-group-item border-0 ps-0 pb-0">
                     <strong class="text-dark text-sm">Social:</strong> &nbsp;
                     <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">

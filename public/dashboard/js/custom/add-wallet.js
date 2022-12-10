@@ -41,7 +41,7 @@ $(document).ready(function(){
 		}
 	    },
 	    data: {
-		crypto_currency_id : coinId,
+		coin_id : coinId,
 		wallet_address : $("#wallet-address").val(),
 		_token: token
 	    },

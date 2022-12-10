@@ -20,7 +20,7 @@
 		<select class="form-control" name="choices-multiple-remove-button" id="rA">
 	    	    <option value="" selected>Select Address</option>
 		@foreach ($adminWallets as $wallet)
-            	    <option value="{{ $wallet->id }}">{{ '['.$wallet->coin->trivial_name.']  '.$wallet->wallet_address }}</option>
+            	    <option value="{{ $wallet->id }}">{{ '['.$wallet->coin->display_name.']  '.$wallet->address }}</option>
         	@endforeach
 		</select>
 	    </div>

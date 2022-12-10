@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\{Client, User};
+use App\Models\{Client, Coin, User};
+use Illuminate\Support\Facades\URL;
 
 function appName(){
     return 'Praemium';
@@ -19,6 +20,17 @@ function is_admin()
 function is_client()
 {
     return User::find(auth()->user()->id)->hasRole('client');
+}
+
+function acceptedCoins()
+{ 
+    return Coin::whereRelation('wallets', function($query){
+        $query->whereRelation('user', function($que){
+            $que->whereRelation('roles', function($q){
+                $q->where('name', 'admin');
+            });
+        });
+    })->get();
 }
 
 function n_char($string, $limit=1){
@@ -113,4 +125,118 @@ function checkFloat($number){
 
 function noSigil($number){
     return substr(dollar($number), 1);
+}
+
+// DATE HELPERS START
+function showDate($datetime){
+    $dt = new \DateTime($datetime);
+    return $dt->format('d-m-Y');;
+}
+
+function showTime($datetime){
+    $dt = new \DateTime($datetime);
+    return $dt->format('h:i A');
+}
+
+function getDates($daysToAdd) { 
+    $days   = [];
+    $period = new \DatePeriod(
+	new \DateTime(), // Start date of the period
+	new \DateInterval('P1D'), // Define the intervals as Periods of 1 Day
+	$daysToAdd // Apply the interval 6 times on top of the starting date
+    );
+
+    foreach ($period as $day){
+	$days[] = array(
+	    "dateTime"=> $day->format('Y-m-d H:i:s'),
+	    "time"=> $day->format('A'),
+	    "day"=> $day->format('l'),
+	    "date"=>$day->format('d'),
+	    "month"=> $day->format('F')
+	);
+    }
+    return $days;
+} 
+
+function getDay($datetime){
+    $days = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+    $dayofweek = date('w', strtotime($datetime));
+    return $days[$dayofweek];
+}
+
+function getMonth($datetime){
+    $months = array(
+	'01'=>'January',
+	'02'=>'February', 
+	'03'=>'March', 
+	'04'=>'April',
+	'05'=>'May',
+	'06'=>'June',
+	'07'=>'July',
+	'08'=>'August',
+	'09'=>'September',
+	'10'=>'October',
+	'11'=>'November',
+	'12'=>'December'
+    );
+    $monthKey = date('m', strtotime($datetime));
+    return $months[$monthKey];
+}
+
+function readDate($datetime){
+    $day = getDay($datetime);
+    $month =  getMonth($datetime);
+    $date =  date('d', strtotime($datetime));
+
+    return  substr($day,0,3).', '.substr($month,0,3).' '.$date;
+}
+
+function readFullDate($datetime){
+    $month = getMonth($datetime);
+    $date =  date('d', strtotime($datetime));
+    $year =  date('Y', strtotime($datetime));
+
+    return substr($month,0,3).' '.$date.', '.$year;
+}
+
+function readMonthYear($datetime){
+    $month =  getMonth($datetime);
+    $year =  date('Y', strtotime($datetime));
+
+    return substr($month,0,3).', '.$year;
+}
+
+function getYear($datetime){
+    return  date('Y', strtotime($datetime));
+}
+
+function readFullTime($datetime, $at=' '){
+    return readFullDate($datetime).' '.$at.' '.showTime($datetime);
+}
+
+function unix($datetime){
+    return strtotime($datetime);
+}
+
+function secondsToTime($seconds) {
+    $dtF = new \DateTime('@0');
+    $dtT = new \DateTime("@$seconds");
+    return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+}
+
+function checkDatePast($datetime) {
+    $date = new \Datetime($datetime);
+    $now = new \DateTime();
+
+    return $date < $now;
+}
+// DATE HELPERS END
+
+
+function cryptoSvg($code){
+    return URL::asset('dashboard/vendors/cryptofont-1.3.0/SVG/'.$code.'.svg');
+}
+
+function cryptoSvgColor($code){
+    return URL::asset('dashboard/vendors/cryptofont-1.3.0/SVG/img/'.$code.'.svg');
 }

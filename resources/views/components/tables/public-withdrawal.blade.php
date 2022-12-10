@@ -60,7 +60,7 @@
                     	<td class="text-xs font-weight-bold">
                       	    <div class="d-flex align-items-center">
 				<img src="{{ cryptoSvgColor($withdrawal->benefactorWallet->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
-                        	<span>{{ $withdrawal->benefactorWallet->wallet_address }}</span>
+                        	<span>{{ $withdrawal->benefactorWallet->address }}</span>
                       	    </div>
                     	</td>
 			<td class="text-xs text-center font-weight-bold">

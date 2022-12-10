@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Client;
+use App\Models\Country;
 use App\Models\Plan;
 use App\Models\Status;
 use App\Models\Transaction;
@@ -85,6 +86,22 @@ class ClientTest extends TestCase
         
         $this->assertInstanceOf(Transaction::class, $subscriptions->first());
         $this->assertEquals(6, count($subscriptions));
+    }
+
+        /**
+     * @test
+     */
+    public function it_gets_user_country()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('client');
+        $client = Client::find($user->id);
+
+        $country = $client->country;
+
+        dump($country);
+
+        $this->assertInstanceOf('\App\Models\Country', $country);
     }
     
 }

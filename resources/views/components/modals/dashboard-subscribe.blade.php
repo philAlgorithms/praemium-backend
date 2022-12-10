@@ -19,7 +19,7 @@
                                 <label for="coins">Select Crypto Currency</label>
                                 <select class="form-control" id="subscription-coin">
                                 @foreach (acceptedCoins() as $i=>$coin)
-                                    <option value="{{ $coin->id }}" {{ $i===0 ? 'selected' : '' }}>{{ $coin->trivial_name }}</option>
+                                    <option value="{{ $coin->id }}" {{ $i===0 ? 'selected' : '' }}>{{ $coin->display_name }}</option>
                                 @endforeach
                                 </select>
 			    </div>

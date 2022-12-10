@@ -15,7 +15,7 @@
 		/>
 		<x-cards.payment-method
 		    :wallets=$wallets
-		    :coins="\App\Models\Wallet::all()" 
+		    :coins="acceptedCoins()" 
 		    class="col-12 col-md-6 h-100 mt-4"
 		/>
 	    </div>

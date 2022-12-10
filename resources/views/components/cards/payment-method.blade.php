@@ -24,7 +24,7 @@
 	    				    <select class="form-control" id="switch-coin">
 	    				    @foreach ($coins as $i=>$coin)
 	    					@php $selected = $i==0 ? 'selected' : '' @endphp
-						<option value="{{ $coin->id.'|'.$coin->code }}" {{ $selected }} >{{ $coin->trivial_name }}</option>
+						<option value="{{ $coin->id.'|'.$coin->code }}" {{ $selected }} >{{ $coin->display_name }}</option>
 	    				    @endforeach
 	    				    </select>
 	    				    <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>

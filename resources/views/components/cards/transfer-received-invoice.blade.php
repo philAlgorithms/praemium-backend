@@ -13,7 +13,7 @@
                     <div class="col-lg-3 col-md-7 text-md-end text-start mt-5">
                     	<h6 class="d-block mt-2 mb-0">User: {{ $transfer->receiver->name }}</h6>
                     	<p class="text-secondary">{{ $transfer->receiver->email }}<br>
-                      	    {{ $transfer->receiver->country->nicename }}
+                      	    {{ $transfer->receiver->country->nicename ?? 'N/A' }}
                     	</p>
                     </div>
                 </div>

@@ -447,7 +447,7 @@ function percentage(amount, percent){
     return (amount * percent)/100;
 }
 
-function handleCommonErrors(error){
+function handleCommonErrorsOld(error){
     var data = error.data;
     var message;
     if(error.message == "CSRF token mismatch."){
@@ -478,6 +478,46 @@ function handleCommonErrors(error){
 	    text: message
 	});
     }
+}
+
+function handleCommonErrors(error){
+  var data = error.data;
+  var message;
+  if(error.message == "CSRF token mismatch."){
+location.reload(); return false;
+  }else if(error.type === 'validation'){
+for(var key in error.data){
+    var info = error.data[key][0];
+    var k = key.substring(key.indexOf('.') + 1); 
+    message = data[Object.keys(data)[Object.keys(data).length - 1]];
+    if(key.includes("client")){
+  message = capFirst(k) + " " + info.substring(info.indexOf('must'));
+    }else if(info == "The password format is invalid."){
+  info = "Password must cointain at least: a letter, a number and a character(Ex. #, !, ?...)";
+    }
+    invalidate($('#'+key),info);
+}
+message = data[Object.keys(data)[Object.keys(data).length - 1]];
+return Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: message
+});
+  }else if(!error.status){
+
+return Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: error.data
+});
+  }else {
+message = typeof(error.data) == 'string' ? error.data : 'Some error occurred. Please check internet connection';
+Swal.fire({ 
+    icon: 'error',
+    title: 'Error',
+    text: message
+});
+  }
 }
 
 function PrintElem(elem)

@@ -23,7 +23,7 @@
                     		<img src="{{ cryptoSvgColor($withdrawal->benefactorWallet->coin->code) }}" class="avatar avatar-xxl me-3" alt="product image">
                 	    </div>
                 	    <div>
-				<h6 class="text-lg mb-0 mt-2">{{ $withdrawal->benefactorWallet->coin->trivial_name }} withdrawal</h6>
+				<h6 class="text-lg mb-0 mt-2">{{ $withdrawal->benefactorWallet->coin->display_name }} withdrawal</h6>
 				<p class="text-sm mb-3">{{ $withdrawal->status->name == 'Successful' ? 
 	'Deposit was confirmed '.$withdrawal->updated_at :
 	($withdrawal->status->name == 'Pending' ? 
@@ -55,7 +55,7 @@
                       		</span>
                       	        <div class="timeline-content">
                         	    <h6 class="text-dark text-sm font-weight-bold mb-0">Receiver Address</h6>
-                        	    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0 text-truncate">{{ $withdrawal->benefactorWallet->wallet_address }}</p>
+                        	    <p class="text-secondary font-weight-bold text-xs mt-1 mb-0 text-truncate">{{ $withdrawal->benefactorWallet->address }}</p>
 				</div>
 			        <div class="timeline-block mb-3">
                       		    <span class="timeline-step">
@@ -99,7 +99,7 @@
                     	    <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       		<div class="d-flex flex-column">
                         	    <h6 class="mb-3 text-sm">{{ $withdrawal->client->name }}</h6>
-                        	    <span class="mb-2 text-xs">Location: <span class="text-dark font-weight-bold ms-2">{{ $withdrawal->client->country->nicename }}</span></span>
+                        	    <span class="mb-2 text-xs">Location: <span class="text-dark font-weight-bold ms-2">{{ $withdrawal->client->country->nicename ?? 'N/A' }}</span></span>
                         	    <span class="mb-2 text-xs">Email Address: <span class="text-dark ms-2 font-weight-bold"><a href="mailto:{{ $withdrawal->client->email }}" class="__cf_email__" data-cfemail="1b7477726d7e695b796e6969726f7435787476">{{ $withdrawal->client->email }}</a></span></span>
                         	    <span class="text-xs d-none">VAT Number: <span class="text-dark ms-2 font-weight-bold">FRB1235476</span></span>
                       	    	</div>

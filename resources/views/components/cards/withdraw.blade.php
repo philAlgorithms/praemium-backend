@@ -52,7 +52,7 @@
   		<div class="col-md-12 mb-4 mx-auto">
                     <div class="card card-body border card-plain border-radius-lg d-flex align-items-center flex-row">
 			<img id="notice-svg" class="w-10 me-3 mb-0" src="{{ cryptoSvg(firstWallet($wallets, 'btc')->coin->code) }}" alt="logo">
-                        <h6 class="mb-0 text-truncate" id="notice-address">{{ firstWallet($wallets, 'btc')->wallet_address }}</h6>
+                        <h6 class="mb-0 text-truncate" id="notice-address">{{ firstWallet($wallets, 'btc')->address }}</h6>
                         <i class="fas fa-clipboard ms-auto text-dark cursor-pointer" id="notice-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy to clipboard"></i>
                     </div>
 		</div>
@@ -114,7 +114,7 @@
 		<div class="col-md-12 mb-4 mx-auto">
                     <div class="card card-body border card-plain border-radius-lg d-flex align-items-center flex-row">
 			<img id="notice-svg" class="w-10 me-3 mb-0" src="{{ cryptoSvg(firstWallet($wallets, 'btc')->coin->code) }}" alt="logo">
-                        <h6 class="mb-0 text-truncate" id="notice-address">{{ firstWallet($wallets, 'btc')->wallet_address }}</h6>
+                        <h6 class="mb-0 text-truncate" id="notice-address">{{ firstWallet($wallets, 'btc')->address }}</h6>
                         <i class="fas fa-clipboard ms-auto text-dark cursor-pointer" id="notice-clipboard" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy to clipboard"></i>
                     </div>
 		</div>

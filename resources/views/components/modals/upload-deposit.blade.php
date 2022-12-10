@@ -22,7 +22,7 @@
 	    	    <select class="form-control" id="coins">
 	    	    @foreach (acceptedCoins() as $i=>$coin)
 	    		@php $selected = firstCoin(acceptedCoins(), 'btc')->id == $coin->id ? 'selected' : '' @endphp
-	         	<option value="{{ $coin->id }}" {{ $selected }}>{{ $coin->trivial_name }}</option>
+	         	<option value="{{ $coin->id }}" {{ $selected }}>{{ $coin->display_name }}</option>
 	    	    @endforeach
 	    	    </select>
 	    	    <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>
@@ -36,7 +36,7 @@
 	    	    <select class="form-control" id="wallets">
 	    	    @foreach (acceptedCoins()->first()->adminWallets as $i=>$wallet)
 	    		@php $selected = firstWallet(acceptedCoins()->first()->adminWallets, 'btc')->id == $wallet->id ? 'selected' : '' @endphp
-	         	<option value="{{ $wallet->id }}" {{ $selected }}>{{ $wallet->wallet_address }}</option>
+	         	<option value="{{ $wallet->id }}" {{ $selected }}>{{ $wallet->address }}</option>
 	    	    @endforeach
 	    	    </select>
 	    	    <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>
@@ -74,7 +74,7 @@
 		    </div>
 		</div>
 		@foreach (\App\Models\AdminWallet::all() as $i=>$wallet)
-		    <input type="hidden" class="wallet-{{ $wallet->coin->id }}" id="{{ $wallet->id }}" value="{{ $wallet->wallet_address }}">
+		    <input type="hidden" class="wallet-{{ $wallet->coin->id }}" id="{{ $wallet->id }}" value="{{ $wallet->address }}">
 		@endforeach
 
 		@foreach (acceptedCoins() as $i=>$coin)

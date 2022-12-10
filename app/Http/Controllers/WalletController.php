@@ -5,18 +5,33 @@ namespace App\Http\Controllers;
 use App\Models\Wallet;
 use App\Http\Requests\StoreWalletRequest;
 use App\Http\Requests\UpdateWalletRequest;
+use App\Models\Coin;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
-class WalletController extends Controller
+class WalletController extends BaseController
 {
     public function add()
     {
-        request()->validate([
+        $validator = Validator::make(request()->toArray(), [
             'coin_id' => ['required', 'numeric', 'exists:coins,id'],
             'wallet_address' => ['required', 'string'],
         ]);
 
-        $wallet = User::find(auth()->user())->wallets()->create([
+        if($validator->fails()){
+            return $this->sendError('Error validation', $validator->errors());
+        }
+        $user = User::find(auth()->user()->id);
+
+        $similar_coins = $user->wallets()->whereRelation('coin', 'id', request('coin_id'))->get();
+
+        if($similar_coins->count() > 0)
+        {
+            $coin = Coin::firstWhere('id', request('coin_id'));
+            return $this->sendError(error:'Wallet exists', errorMessages:'You already have a wallet address set for'.$coin->display_name, code:404, type: "integrity");
+        }
+
+        $wallet = $user->wallets()->create([
             'coin_id' => request('coin_id'),
             'address' => request('wallet_address')
         ]);

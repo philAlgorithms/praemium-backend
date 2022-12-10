@@ -6,8 +6,8 @@
 	    <select class="form-control" id="switch-coin">
 	    @foreach ($coins as $i=>$coin)
 	    	@php $selected = firstCoin($coins, 'btc')->id == $coin->id ? 'selected' : '' @endphp
-	         <option value="{{ $coin->id }}" {{ $selected }}>{{ $coin->trivial_name }}</option>
-<?php /*	<option value="{{ $coin->name.'|'.$coin->code.'-'.$prices[$coin->coinlib_name]['usd'].':'.$coin->clientWallets->first()->wallet_address.'/'.$coin->trust_wallet_id }}" {{ $selected }} >{{ $coin->trivial_name }}</option>*/ ?>
+	         <option value="{{ $coin->id }}" {{ $selected }}>{{ $coin->display_name }}</option>
+<?php /*	<option value="{{ $coin->name.'|'.$coin->code.'-'.$prices[$coin->coinlib_name]['usd'].':'.$coin->clientWallets->first()->address.'/'.$coin->trust_wallet_id }}" {{ $selected }} >{{ $coin->display_name }}</option>*/ ?>
 	    @endforeach
 	    </select>
 	    <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>
@@ -28,7 +28,7 @@
 @endforeach
 
 @foreach ($coins as $i=>$coin)
-    <input type="hidden" id="coin-address-{{ $coin->id }}" value="{{ $coin->wallets(auth()->user()->id)->first()->wallet_address }}">
+    <input type="hidden" id="coin-address-{{ $coin->id }}" value="{{ $coin->wallets(auth()->user()->id)->first()->address }}">
 @endforeach
 
 @foreach ($coins as $i=>$coin)

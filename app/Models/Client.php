@@ -22,7 +22,10 @@ class Client extends User
         return $this->hasMany(Transaction::class, 'client_id');
     }
 
-    
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
 
     public function transactionHasStatus(Status|string $status): HasMany
     {

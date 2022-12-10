@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\{LoginController, RegisterController};
 use App\Http\Controllers\Pages\{AuthController, DepositController, MiscController};
+use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function() {
@@ -26,5 +27,19 @@ Route::middleware(['role:client'])->group(function(){
     Route::get('/profile', [MiscController::class, 'profile']);
     Route::prefix('deposits')->group(function() {
         // 
+    });
+});
+
+Route::middleware(['role:admin'])->group(function(){
+    Route::get('/account/admin', [MiscController::class, 'admin_dashboard']);
+    Route::get('/account/admin/profile', [MiscController::class, 'admin_profile']);
+});
+
+Route::middleware(['role:admin|client'])->group(function(){
+    Route::prefix('auth')->group(function() {
+        Route::prefix('wallet')->group(function() {
+            Route::post('/add', [WalletController::class, 'add']);
+            Route::post('/delete/{wallet}', [WalletController::class, 'destroy']);
+        });
     });
 });

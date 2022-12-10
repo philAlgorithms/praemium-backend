@@ -11,7 +11,7 @@
 		    {{ $client->name }}
               	</h5>
               	<p class="mb-0 font-weight-bold text-sm">
-                    {{-- {{ $client->country->nicename }} --}}
+                    {{ $client->country->nicename ?? 'N/A' }}
               	</p>
             </div>
         </div>

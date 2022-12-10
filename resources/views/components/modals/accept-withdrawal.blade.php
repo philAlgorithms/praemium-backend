@@ -43,7 +43,7 @@
 		    <label>Receiver address</label>
 		    <div class="input-group">
 			<span class="input-group-text" id="addon3"><i class="cf cf-{{ $withdrawal->benefactorWallet->coin->code }}"></i></span>
-			<input type="text" class="form-control" id="receiver" value="{{ $withdrawal->benefactorWallet->wallet_address }}" disabled  aria-describedby="addon3">
+			<input type="text" class="form-control" id="receiver" value="{{ $withdrawal->benefactorWallet->address }}" disabled  aria-describedby="addon3">
 		    </div>
 		</div>
 

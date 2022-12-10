@@ -38,7 +38,7 @@
 		
 
 			<td class="text-xs text-center font-weight-bold">
-                      	    <span class="my-2 text-x">{{ $client->country->nicename }}</span>
+                      	    <span class="my-2 text-x">{{ $client->country->nicename ?? 'N/A' }}</span>
 			</td>
 		
                     	<td class="text-xs font-weight-bold">
@@ -56,7 +56,7 @@
                     	<td class="text-xs font-weight-bold w-50">
                       	    <div class="d-flex align-items-center">
 				<img src="" class="avatar avatar-xs me-2 d-none" alt="user image">
-                        	<span class="text-truncate">{{ $client->benefactorWallet->wallet_address ?? 'N/A' }}</span>
+                        	<span class="text-truncate">{{ $client->benefactorWallet->address ?? 'N/A' }}</span>
                       	    </div>
                     	</td>
 
