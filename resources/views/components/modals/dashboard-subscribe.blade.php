@@ -30,11 +30,11 @@
 				    class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0"
 				    text="Proceed"
                     />
-				{{--
-                <button class="btn bg-gradient-primary w-100 mt-4 mb-0 d-none" id="btn-loading" type="button" disabled>
+				
+                <button class="btn bg-gradient-primary w-100 mt-4 mb-0 d-none" id="subscribe-loading" type="button" disabled>
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                       <span id="load-text"> Please wait...</span>
-                    </button> --}}
+                    </button>
                             </div>
                         </form>
                     </div>

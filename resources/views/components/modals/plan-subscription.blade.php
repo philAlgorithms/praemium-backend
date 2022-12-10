@@ -9,13 +9,6 @@
 	    <form role="form text-left">
 	    @csrf
 		<input type="hidden" class="pid" value="{{ $plan->id }}" >
-<?php /*		<div class="form-group">
-		    <label for="amount">Amount</label>
-		    <div class="input-group mb-4">
-          		<input type="number" class="form-control amount" placeholder="Enter amount">
-        	    </div>
-      		</div>
- */?>
 		<div class="form-group">
 		    <label for="amount">Amount</label>
 		    <div class="input-group mb-4">

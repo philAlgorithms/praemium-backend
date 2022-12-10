@@ -6,24 +6,98 @@ use App\Models\Deposit;
 use App\Http\Requests\StoreDepositRequest;
 use App\Http\Requests\UpdateDepositRequest;
 use App\Models\Client;
+use App\Models\Coin;
 use App\Models\Plan;
 use App\Models\Status;
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 
 class DepositController extends BaseController
 {
-    public function subscribe()
+    public function init()
     {
-        request()->validate([
+        $validator1 = Validator::make(request()->toArray(), [
+            'plan' => ['required', 'numeric', 'exists:plans,id'],
+            'coin' => ['required', 'string'],
+        ]);
+
+        if($validator1->fails()){
+            return $this->sendError('Error validation', $validator1->errors());
+        }
+
+        $plan = Plan::find(request('plan'));
+
+        $validator2 = Validator::make(request()->toArray(), [
+            'amount' => ['required', 'numeric', 'min:'.$plan->min, 'max:'.$plan->max],
+        ]);
+
+        if($validator2->fails()){
+            return $this->sendError('Error validation', $validator2->errors());
+        }
+
+        $coin = Coin::find(request('coin'));
+
+        $link = URL::asset('/account/deposit?coin='.$coin->id.'&amount='.request('amount').'&plan='.request('plan'));	
+        return $this->sendResponse($link, 'deposit link generated');
+    }
+
+    public function deposit()
+    {
+        $validator1 = Validator::make(request()->toArray(), [
             'plan_id' => ['required', 'numeric', 'exists:plans,id'],
         ]);
 
+        if($validator1->fails()){
+            return $this->sendError('Error validation', $validator1->errors());
+        }
+
         $plan = Plan::find(request('plan_id'));
 
-        request()->validate([
+        $validator2 = Validator::make(request()->toArray(), [
+            'amount' => ['required', 'numeric', 'min:'.$plan->min, 'max:'.$plan->max],
+            'receiver_address' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
+            'sender_address' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
+            'tx' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')]
+        ]);
+        if($validator2->fails()){
+            return $this->sendError('Error validation', $validator2->errors());
+        }
+        $user = Client::find(auth()->user()->id);
+        $transaction = $user->subscribe(plan: $plan, amount: request('amount'));
+
+        $deposit = Transaction::find($transaction->id)->transactionable;
+
+        if(is_null($deposit))
+        {
+            return $this->sendError(error:'Transaction not found', errorMessages:'Transaction does not exist', code:404);
+        }
+
+        $approved_deposit = $deposit->completeSubscription(receiver_address: request('receiver_address'), sender_address: request('sender_address'), tx: request('tx'));
+
+        return $this->sendResponse($approved_deposit, "Subscription successful");
+    }
+    public function subscribe()
+    {
+        $validator1 = Validator::make(request()->toArray(), [
+            'plan_id' => ['required', 'numeric', 'exists:plans,id'],
+        ]);
+
+        if($validator1->fails()){
+            return $this->sendError('Error validation', $validator1->errors());
+        }
+
+        $plan = Plan::find(request('plan_id'));
+
+        $validator2 = Validator::make(request()->toArray(), [
             'amount' => ['required', 'numeric', 'min:'.$plan->min, 'max:'.$plan->max],
         ]);
+
+        if($validator2->fails()){
+            return $this->sendError('Error validation', $validator2->errors());
+        }
+
         $user = Client::find(auth()->user()->id);
 
         $deposits = $user->depositTransactionHasStatus(env('STATUS_PENDING'));
@@ -44,13 +118,18 @@ class DepositController extends BaseController
 
     public function completeSubscription()
     {
-        request()->validate([
+        $validator = Validator::make(request()->toArray(), [
+            'plan_id' => ['required', 'numeric', 'exists:plans,id'],
             'deposit_id' => ['required', 'exists:deposits,id'],
             'receiver_address' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
             'sender_address' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
             'tx' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')]
         ]);
 
+        if($validator->fails()){
+            return $this->sendError('Error validation', $validator->errors());
+        }
+        
         $deposit = Deposit::find(request('deposit_id'));
 
         if(is_null($deposit))
@@ -65,12 +144,16 @@ class DepositController extends BaseController
 
     public function approve()
     {
-        request()->validate([
+        $validator = Validator::make(request()->toArray(), [
             'deposit_id' => ['required', 'exists:deposits,id'],
             'receiver_address' => ['required', 'string', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
             'sender_address' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
             'tx' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')]
         ]);
+
+        if($validator->fails()){
+            return $this->sendError('Error validation', $validator->errors());
+        }
 
         $deposit = Deposit::find(request('deposit_id'));
 

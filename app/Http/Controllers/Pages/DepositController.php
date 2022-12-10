@@ -13,7 +13,7 @@ class DepositController extends Controller
     public function subscribe(Request $request){
 		$scripts = [
 			'dashboard/js/plugins/sweetalert.min.js',
-			'dashboard/js/custom/login.js'
+			'dashboard/js/custom/plans/check-subscribe.js'
 		];
 
 		$client = client();
