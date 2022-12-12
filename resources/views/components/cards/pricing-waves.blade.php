@@ -9,7 +9,7 @@
 		</x-general.tooltip-element-svg>
 		<x-general.tooltip-element-svg
 		    text="Withdraw from this plan" 
-		    link="/withdraw-funds">
+		    link="/account/withdrawal/withdraw">
 			<x-svg.basket color='dark' />
 		</x-general.tooltip-element-svg>
 	    </x-general.tooltip-dropdown>
@@ -46,15 +46,15 @@
             	10% Referral Bonus
           	</li>
             </ul>
-            <button class="btn bg-gradient-dark w-100 mt-4 mb-0 check-btn" data-bs-toggle="modal" data-bs-target="#subscribe-modal" data-id="{{ $plan->id }}" data-name="{{ $plan->name }}">
+            <button class="btn bg-gradient-dark w-100 mt-4 mb-0 check-btn  plan-button" data-bs-toggle="modal" data-bs-target="#subscribe-modal" data-id="{{ $plan->id }}" data-name="{{ $plan->name }}">
 				Buy Now
 			</button>
 	        <x-modals.plan-subscription :plan=$plan />
 	
-	    <button class="btn bg-gradient-primary w-100 mt-4 mb-0 loading-btn d-none" type="button" disabled>
-		<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-		<span id="load-text"> Buy now</span>
-	    </button>
+			<button class="btn bg-gradient-primary w-100 mt-4 mb-0 loading-btn d-none" type="button" disabled>
+				<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+				<span id="load-text"> Buy now</span>
+			</button>
       	</div>
     </div>
 </div>

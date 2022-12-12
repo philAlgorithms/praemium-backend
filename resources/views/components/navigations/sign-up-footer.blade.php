@@ -51,7 +51,7 @@
           	<div class="collapse " id="withdrawals">
 		    <ul class="nav ms-4 ps-3 nav-sm flex-column">
                     	<li class="nav-item">
-                      	    <a class="nav-link " href="/withdraw-funds">
+                      	    <a class="nav-link " href="/account/withdrawal/withdraw">
                         	<span class="sidenav-mini-icon text-xs"> W </span>
                         	<span class="sidenav-normal"> Withdraw Funds </span>
                 	    </a>

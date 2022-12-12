@@ -20,6 +20,7 @@ return new class extends Migration
                   ->restrictOnDelete()
                   ->cascadeOnUpdate();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

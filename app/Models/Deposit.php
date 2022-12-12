@@ -23,7 +23,12 @@ class Deposit extends Model
         return $this->belongsTo(Plan::class);
     }
 
-    public function approve(string $receiver_address, string|null $sender_address, string|null $tx)
+    public function client(): BelongsTo
+    {
+        return $this->transaction->client();
+    }
+
+    public function approve(string|null $receiver_address, string $sender_address, string|null $tx)
     {
         return $this->transaction->approveDeposit(receiver_address: $receiver_address, sender_address: $sender_address, tx: $tx);
     }
@@ -52,7 +57,7 @@ class Deposit extends Model
 
     public function earnings(): HasMany
     {
-        return $this->hasMany(PlanEarning::class);
+        return $this->hasMany(PlanEarning::class, 'deposit_id');
     }
 
     public function generateEarnings(?float $roi=null): HasMany
@@ -65,5 +70,24 @@ class Deposit extends Model
         }
 
         return $this->earnings();
+    }
+
+    public function lastEarning()
+    {
+        return $this->earnings()->latest('pay_date');
+    }
+
+    public function getSubscriptionShouldBeCompletedAttribute()
+    {
+        return $this->earnings()->where('earned', 0)->get()->count() === 0;
+    }
+
+    public function markAsCompleted()
+    {
+        if($this->subscription_should_be_completed){
+            return $this->update([
+                'earning_completed' => 1
+            ]);
+        }
     }
 }

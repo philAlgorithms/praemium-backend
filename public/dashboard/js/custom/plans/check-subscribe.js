@@ -15,10 +15,10 @@ subscribe.click(function () {
             coin: subscriptionCoin.val(),
             plan: $("#subscription-plan").val()
         },
-	    headers: {
-            	'Accept': 'application/json',
-	    	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	    },
+        headers: {
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         error: function (err) {
             var error = err.responseJSON;
             aJ(error);

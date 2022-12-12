@@ -17,32 +17,32 @@
                         	</div>
                             	<div class="ms-4">
                               	    <p class="text-xs font-weight-bold mb-0">Plan:</p>
-                              	    <h6 class="text-sm mb-0">{{ $payment->clientPlan->plan_name }}</h6>
+                              	    <h6 class="text-sm mb-0">{{ $payment->deposit->plan->name }}</h6>
                             	</div>
                             </div>
                         </td>
                         <td class="w-20">
                             <div class="text-center">
                             	<p class="text-xs font-weight-bold mb-0">Amount Invested:</p>
-                            	<h6 class="text-sm mb-0">{{ $payment->clientPlan->amount }}</h6>
+                            	<h6 class="text-sm mb-0">{{ $payment->deposit->transaction->amount }}</h6>
                             </div>
                         </td>
                         <td class="w-20">
                             <div class="text-center">
                         	<p class="text-xs font-weight-bold mb-0">Interest:</p>
-                            	<h6 class="text-sm mb-0">{{ dollar($payment->interest) }}</h6>
+                            	<h6 class="text-sm mb-0">{{ dollar($payment->amount) }}</h6>
                             </div>
                         </td>
                         <td class="align-middle text-sm w-20">
                             <div class="col text-center">
                             	<p class="text-xs font-weight-bold mb-0">Date:</p>
-                            	<h6 class="text-sm mb-0">{{ readFullDate($payment->planPayDate->pay_date) }}</h6>
+                            	<h6 class="text-sm mb-0">{{ readFullDate($payment->pay_date) }}</h6>
                 	    </div>
 			</td>
 		        <td class="align-middle text-sm w-20">
                             <div class="col text-center">
                             	<p class="text-xs font-weight-bold mb-0">Time:</p>
-                            	<h6 class="text-sm mb-0">{{ showTime($payment->planPayDate->pay_date) }}</h6>
+                            	<h6 class="text-sm mb-0">{{ showTime($payment->pay_date) }}</h6>
                 	    </div>
 			</td>
 </tr>

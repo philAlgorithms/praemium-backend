@@ -11,10 +11,12 @@ class Wallet extends Component
      *
      * @return void
      */
-    public $wallet;
-    public function __construct($wallet)
+    public $coin;
+    public $address;
+    public function __construct($coin, $address)
     {
-        $this->wallet = $wallet;
+        $this->coin = $coin;
+        $this->address = $address;
     }
 
     /**

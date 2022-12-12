@@ -56,7 +56,7 @@
 	    <div class="row">
 	    @foreach ($wallets as $wallet)
 	        <div class="col-md-6 mb-4 wallet-wrapper">
-		    <x-general.wallet :wallet=$wallet>
+		    <x-general.wallet :coin="$wallet->coin" :address="$wallet->address">
 			<i class="fas fa-trash ms-auto text-danger cursor-pointer delete-wallet" id="delete_wallet-{{ $wallet->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Address"></i>
 		    </x-general.wallet>
 		</div>

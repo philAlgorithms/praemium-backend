@@ -22,6 +22,13 @@ class Client extends User
         return $this->hasMany(Transaction::class, 'client_id');
     }
 
+    public function deposits()
+    {
+        $deposit_ids = $this->transactions()->pluck('transactionable_id')->toArray();
+
+        return Deposit::wherein('id', $deposit_ids);
+    }
+
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country_id');
@@ -56,7 +63,7 @@ class Client extends User
     }
 
 
-    public function subscribe(Plan $plan, float $amount)
+    public function subscribe(Plan $plan, float $amount, Coin $coin)
     {
         $deposit = Deposit::create(['plan_id' => $plan->id]);
 
@@ -64,7 +71,8 @@ class Client extends User
             'amount'=> $amount,
             'transactionable_id' => $deposit->id,
             'transactionable_type' => 'App\Models\Deposit',
-            'status_id' => Status::firstWhere('key', env('STATUS_PENDING'))->id
+            'status_id' => Status::firstWhere('key', env('STATUS_PENDING'))->id,
+            'coin_id' => $coin->id
         ]);
 
         return $transaction;
@@ -128,16 +136,120 @@ class Client extends User
                         });
                     });
     }
+
+    public function planInterests()
+    {
+        return $this->planEarnings()->where('index', '!=', 0);
+    }
+
     public function duePayments()
     {
         $now = (new \Datetime())->format('Y-m-d H:i:s');
         return $this->planEarnings()->where('earned', 0)
                                     ->where('pay_date', '<', $now);
     }
+
+    public function earnedSubscriptions()
+    {
+        return $this->planEarnings()->where('earned', 1);
+    }
+
+    public function activePlans()
+    {
+        $now = (new \Datetime())->format('Y-m-d H:i:s');
+        $active_deposit_ids = $this->planEarnings()->where('earned', 0)->pluck('deposit_id')->toArray();
+        return $this->deposits();
+        // TO BE CONTINUED
+    }
+    
     // SUBSCRIPTION END
 
-    protected function getTotalDepositsAttribute()
+
+    // WITHDRAWAL START
+
+    public function withdrawalTransactions(): HasMany
     {
-        return array_sum($this->depositTransactionHasStatus(env('STATUS_SUCCESSFUL'))->get(['amount'])->toArray());
+        return $this->transactions()->whereHasMorph('transactionable', [Withdrawal::class]);
     }
+
+    public function withdrawalTransactionHasStatus(Status|string $status): HasMany
+    {
+        return $this->transactionHasStatus($status)->whereHasMorph('transactionable', [Withdrawal::class]);
+    }
+
+    public function submitWithdrawal(float $amount, string $receiver_address, Coin $coin)
+    {
+        $amount = -1 * abs($amount);
+        $withdrawal = Withdrawal::create();
+
+        $transaction = $this->transactions()->create([
+            'amount'=> $amount,
+            'transactionable_id' => $withdrawal->id,
+            'transactionable_type' => 'App\Models\Withdrawal',
+            'status_id' => Status::firstWhere('key', env('STATUS_PENDING'))->id,
+            'coin_id' => $coin->id,
+            'receiver_address' => $receiver_address
+        ]);
+
+        return $transaction;
+    }
+    // WITHDRAWAL END
+
+    /**
+     * CONCERNING FINANCE 
+     */
+
+    // DEPOSIT AND SUBSCRIPTION FINANCE START
+    public function getTotalDepositsAttribute()
+    {
+        $succesful_deposits = $this->depositTransactionHasStatus(env('STATUS_SUCCESSFUL'));
+        
+        return array_sum($succesful_deposits->pluck('amount')->toArray());
+    }
+
+    public function getTotalPlanEarningsAttribute()
+    {
+        return array_sum($this->earnedSubscriptions()->pluck('amount')->toArray());
+    }
+
+    public function getTotalWithdrawalsAttribute()
+    {
+        $succesful_deposits = $this->withdrawalTransactionHasStatus(env('STATUS_SUCCESSFUL'));
+        
+        return array_sum($succesful_deposits->pluck('amount')->toArray());
+    }
+
+    public function getTotalExpenditureAttribute()
+    {
+        return $this->total_withdrawals;
+    }
+
+    public function getTotalEarningsAttribute()
+    {
+        $total_plan_earnings = $this->total_plan_earnings;
+        $total_referral_earnings = $this->total_referral_earnings;
+
+        return $total_earnings = $total_plan_earnings + $total_referral_earnings;
+    }
+
+    public function getWithdrawableAmountAttribute()
+    {
+        $total_withdrawals = $this->total_withdrawals;
+        $total_earnings = $this->total_earnings;
+
+        return $total_earnings + $total_withdrawals;
+    }
+
+    public function getRerferralEarningsAttribute()
+    {
+        // $succesful_deposits = $this->withdrawalTransactionHasStatus(env('STATUS_SUCCESSFUL'));
+        
+        // return array_sum($succesful_deposits->pluck('amount')->toArray());
+        return 0;
+    }
+    // public function getActivePlanEarningsAttribute()
+    // {
+    //     return $active_plans = $this->activePlans;
+    // }
+    // DEPOSIT AND SUBSCRIPTION FINANCE END
 }

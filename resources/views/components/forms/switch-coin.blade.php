@@ -1,3 +1,6 @@
+<?php 
+return echo $prices;
+/*
 <div class="col-md-12 my-3 mx-auto">
     <div class="form-group">
 	<label for="coin-switch">Change transaction cryptocurrency</label>
@@ -7,7 +10,7 @@
 	    @foreach ($coins as $i=>$coin)
 	    	@php $selected = firstCoin($coins, 'btc')->id == $coin->id ? 'selected' : '' @endphp
 	         <option value="{{ $coin->id }}" {{ $selected }}>{{ $coin->display_name }}</option>
-<?/*	<option value="{{ $coin->name.'|'.$coin->code.'-'.$prices[$coin->coinlib_name]['usd'].':'.$coin->adminWallets->first()->address.'/'.$coin->trust_wallet_id }}" {{ $selected }} >{{ $coin->display_name }}</option>*/?>
+{{--	<option value="{{ $coin->name.'|'.$coin->code.'-'.$prices[$coin->coinlib_name]['usd'].':'.$coin->adminWallets->first()->address.'/'.$coin->trust_wallet_id }}" {{ $selected }} >{{ $coin->display_name }}</option> --}}
 	    @endforeach
 	    </select>
 	    <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>

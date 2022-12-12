@@ -7,8 +7,7 @@
 	    @foreach ($coins as $i=>$coin)
 	    	@php $selected = firstCoin($coins, 'btc')->id == $coin->id ? 'selected' : '' @endphp
 	         <option value="{{ $coin->id }}" {{ $selected }}>{{ $coin->display_name }}</option>
-<?php /*	<option value="{{ $coin->name.'|'.$coin->code.'-'.$prices[$coin->coinlib_name]['usd'].':'.$coin->clientWallets->first()->address.'/'.$coin->trust_wallet_id }}" {{ $selected }} >{{ $coin->display_name }}</option>*/ ?>
-	    @endforeach
+    @endforeach
 	    </select>
 	    <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>
 	</div>

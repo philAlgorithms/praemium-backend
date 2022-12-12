@@ -73,7 +73,7 @@
 			<input type="text" class="form-control" id="upload-exchange" placeholder="Exchange platform (optional)" aria-label="exchange" aria-describedby="addon9">
 		    </div>
 		</div>
-		@foreach (\App\Models\AdminWallet::all() as $i=>$wallet)
+		@foreach (admin_wallets() as $i=>$wallet)
 		    <input type="hidden" class="wallet-{{ $wallet->coin->id }}" id="{{ $wallet->id }}" value="{{ $wallet->address }}">
 		@endforeach
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\{Client, Coin, User};
+use App\Models\{Client, Coin, User, Wallet};
 use Illuminate\Support\Facades\URL;
 
 function appName(){
@@ -22,6 +22,14 @@ function is_client()
     return User::find(auth()->user()->id)->hasRole('client');
 }
 
+function admin_wallets()
+{
+    return Wallet::whereRelation('user', function($que){
+        $que->whereRelation('roles', function($q){
+            $q->where('name', 'admin');
+        });
+    })->get();
+}
 function acceptedCoins()
 { 
     return Coin::whereRelation('wallets', function($query){
@@ -99,6 +107,21 @@ function dollar($number){
 	$sigil = '-$';
     }
     return $sigil.number_format($number, 2, '.', ',');
+}
+
+function token($amount, $coin){
+    return dp($amount, 6).' '.$coin->code;
+}
+
+function blockchain($hash, $code){
+	$blockchain_assets = ['btc','eth','bch'];
+	$blockchair_assets = ['btc','eth','bch', 'ltc', 'bnb','doge','etc'];
+
+	if(in_array($code, $blockchain_assets)){
+	    return "https://www.blockchain.com/".$code."/tx/".$hash;
+	}else if(in_array($code, $blockchair_assets)){
+	    return "https://www.blockchain.com/".$code."/tx/".$hash;
+	}
 }
 
 function capState($cap){
@@ -239,4 +262,118 @@ function cryptoSvg($code){
 
 function cryptoSvgColor($code){
     return URL::asset('dashboard/vendors/cryptofont-1.3.0/SVG/img/'.$code.'.svg');
+}
+
+function hasCoin(string $code, $wallets){
+	$response = 0;
+
+	foreach($wallets as $wallet){
+	    $response = $wallet->coin->code === $code ? 1 : $response;
+	}
+
+	return $response;
+}
+
+function firstInstance(string $coin_code, $wallets){
+	if(!hasCoin($coin_code, $wallets))
+	   return null;
+
+	foreach($wallets as $wallet){
+	    if($wallet->coin->code === $coin_code)
+		return $wallet;
+	}
+}
+
+function firstWallet($wallets, $coin_code=null){
+	$first_wallet;
+	foreach($wallets as $wallet){
+	    $first_wallet = $wallet;  
+	    break;
+	}
+	if($coin_code === null)
+	    return $first_wallet;
+	else if($coin_code !== null)
+	    return  hasCoin($coin_code, $wallets) ? 
+	    firstInstance($coin_code, $wallets) : 
+	    (hasCoin('btc', $wallets) ? 
+	    	firstInstance('btc', $wallets) : 
+	    	$first_wallet);
+}
+
+function firstCoinInstance(string $coin_code, $coins){
+	if(!containsCoin($coin_code, $coins))
+	   return null;
+
+	foreach($coins as $coin){
+	    if($coin->code === $coin_code)
+		return $coin;
+	}
+}
+
+function containsCoin(string $code, $coins){
+	$response = 0;
+
+	foreach($coins as $coin){
+	    $response = $coin->code === $code ? 1 : $response;
+	}
+
+	return $response;
+}
+
+function firstCoin($coins, $coin_code=null){
+	$first_coin;
+	foreach($coins as $coin){
+	    $first_coin = $coin;  
+	    break;
+	}
+	if($coin_code === null)
+	    return $first_coin;
+	else if($coin_code !== null)
+	    return  containsCoin($coin_code, $coins) ? 
+	    firstCoinInstance($coin_code, $coins) : 
+	    (containsCoin('btc', $coins) ? 
+	    	firstCoinInstance('btc', $coins) : 
+	    	$first_coin);
+}
+
+function newArray($oldObject, $prop){
+    $newArray = array();
+    foreach($oldObject as $oldObj){
+  $newArray[] = $oldObj->$prop;
+    }
+    return $newArray;
+}
+
+function getPrices($wallets=null){
+	if($wallets === null){
+	    $wallets = admin_wallets();
+	}
+	$coins = acceptedCoins($wallets);
+	$coin_ids = newArray($wallets, 'coibn_id'); 
+	$coins = Coin::wherein('id', $coin_ids)->get();
+
+	$coin_name_arrays = [];
+	foreach($coins as $coin){
+	    array_push($coin_name_arrays, $coin->coinlib_name);
+	}
+	
+	$coin_names = implode(',',$coin_name_arrays);
+
+	$client = new Codenixsv\CoinGeckoApi\CoinGeckoClient();
+	$data = $client->simple()->getPrice($coin_names, 'usd');
+	return $data;
+}
+
+function getPricesByCoins($coins){
+	$coin_name_arrays = [];
+	foreach($coins as $coin){
+	    array_push($coin_name_arrays, $coin->coinlib_name);
+	}
+	
+	$coin_names = implode(',',$coin_name_arrays);
+
+	$client = new Codenixsv\CoinGeckoApi\CoinGeckoClient();
+	$data = $client->simple()->getPrice($coin_names, 'usd');
+	return $data;
+
 }

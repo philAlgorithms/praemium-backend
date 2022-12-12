@@ -20,7 +20,7 @@
 		/>
 	    </div>
 	    <div id="settings" class="row mt-5">
-		<x-cards.auth-settings />
+		{{-- <x-cards.auth-settings /> --}}
 		<x-cards.password-settings />
 	    </div>
 	    <x-navigations.dashboard-footer />

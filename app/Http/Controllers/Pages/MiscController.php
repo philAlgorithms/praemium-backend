@@ -21,8 +21,7 @@ class MiscController extends Controller
 		];
 
 		$client = client();
-		$earnings = $client->planEarnings()->get();
-		
+		$earnings = $client->planInterests()->get();
 		return view('dashboard.misc.home', compact(['scripts', 'client', 'earnings']));
     }
 
@@ -33,7 +32,7 @@ class MiscController extends Controller
 		];
 
 		$clients = Client::all();
-		$earnings = PlanEarning::all();
+		$earnings = PlanEarning::all()->where('index', '!=', 0);
 		
 		return view('dashboard.misc.admin', compact(['scripts', 'clients', 'earnings']));
     }

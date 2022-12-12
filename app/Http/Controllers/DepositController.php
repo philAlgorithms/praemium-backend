@@ -54,18 +54,23 @@ class DepositController extends BaseController
         }
 
         $plan = Plan::find(request('plan_id'));
+        $coin = Coin::find(request('coin_id'));
 
         $validator2 = Validator::make(request()->toArray(), [
+            'coin_id' => ['required', 'string'],
             'amount' => ['required', 'numeric', 'min:'.$plan->min, 'max:'.$plan->max],
             'receiver_address' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
             'sender_address' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
-            'tx' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')]
+            'transaction_hash' => ['string', 'required', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')]
         ]);
+        
         if($validator2->fails()){
             return $this->sendError('Error validation', $validator2->errors());
+        }else if(request('transaction_hash') !== null and Transaction::where('tx', '=', request('transaction_hash'))->count() > 0){
+            return $this->sendError("Validation Error","Transaction Hash already exists in our records", 403, "integrity");
         }
         $user = Client::find(auth()->user()->id);
-        $transaction = $user->subscribe(plan: $plan, amount: request('amount'));
+        $transaction = $user->subscribe(plan: $plan, amount: request('amount'), coin: $coin);
 
         $deposit = Transaction::find($transaction->id)->transactionable;
 
@@ -74,7 +79,7 @@ class DepositController extends BaseController
             return $this->sendError(error:'Transaction not found', errorMessages:'Transaction does not exist', code:404);
         }
 
-        $approved_deposit = $deposit->completeSubscription(receiver_address: request('receiver_address'), sender_address: request('sender_address'), tx: request('tx'));
+        $approved_deposit = $deposit->completeSubscription(receiver_address: request('receiver_address'), sender_address: request('sender_address'), tx: request('transaction_hash'));
 
         return $this->sendResponse($approved_deposit, "Subscription successful");
     }
@@ -146,9 +151,9 @@ class DepositController extends BaseController
     {
         $validator = Validator::make(request()->toArray(), [
             'deposit_id' => ['required', 'exists:deposits,id'],
-            'receiver_address' => ['required', 'string', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
-            'sender_address' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
-            'tx' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')]
+            'receiver_address' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
+            'sender_address' => ['required', 'string', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')],
+            'transaction_hash' => ['string', 'nullable', 'min:'.env('MINIMUM_WALLET_ADDRESS_LENGHT')]
         ]);
 
         if($validator->fails()){
@@ -162,7 +167,7 @@ class DepositController extends BaseController
             return $this->sendError(error:'Transaction not found', errorMessages:'Transaction does not exist', code:404);
         }
         
-        $approved_deposit = $deposit->approve(receiver_address: request('receiver_address'), sender_address: request('sender_address'), tx: request('tx'));
+        $approved_deposit = $deposit->approve(receiver_address: request('receiver_address'), sender_address: request('sender_address'), tx: request('transaction_hash'));
 
         return $this->sendResponse($approved_deposit, "client Registration successful");
     }

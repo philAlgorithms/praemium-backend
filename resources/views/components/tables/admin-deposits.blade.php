@@ -27,47 +27,47 @@
                 	    </div>
 			</td>
 			<td class="font-weight-bold">
-			    <img src="{{ URL::asset($deposit->client->avatar) }}" class="avatar avatar-xs me-2" alt="user image">
-                      	    <span class="my-2 text-xs">{{ $deposit->client->name }}</span>
+			    <img src="{{ URL::asset($deposit->transaction->client->avatar) }}" class="avatar avatar-xs me-2" alt="user image">
+                      	    <span class="my-2 text-xs">{{ $deposit->transaction->client->name }}</span>
 			</td>	
 
                     	<td class="font-weight-bold">
-                      	    <span class="my-2 text-xs">{{ readFullDate($deposit->created_at) }}</span>
+                      	    <span class="my-2 text-xs">{{ readFullDate($deposit->transaction->created_at) }}</span>
 			</td>
 
 			<td class="text-xs text-center font-weight-bold">
-                      	    <span class="my-2 text-x">{{ dollar($deposit->amount) }}</span>
+                      	    <span class="my-2 text-x">{{ dollar($deposit->transaction->amount) }}</span>
 			</td>
 		
                     	<td class="text-xs font-weight-bold">
                       	    <div class="d-flex align-items-center">
-                            	<button class="btn btn-icon-only btn-rounded btn-{{ $deposit->status->color }} mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i class="{{ $deposit->status->icon }}" aria-hidden="true"></i></button>
-                        	<span>{{ $deposit->status->name }}</span>
+                            	<button class="btn btn-icon-only btn-rounded btn-{{ $deposit->transaction->status->color }} mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i class="{{ $deposit->transaction->status->icon }}" aria-hidden="true"></i></button>
+                        	<span>{{ $deposit->transaction->status->name }}</span>
                             </div>
 			</td>
 			<td class="text-xs font-weight-bold w-50">
                       	    <div class="d-flex align-items-center">
-				<img src="{{ cryptoSvgColor($deposit->benefactorWallet->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
-                        	<span class="text-truncate">{{ $deposit->sender_address }}</span>
+				<img src="{{ cryptoSvgColor($deposit->transaction->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
+                        	<span class="text-truncate">{{ $deposit->transaction->sender_address }}</span>
                       	    </div>
                     	</td>
 
                     	<td class="text-xs font-weight-bold w-50">
                       	    <div class="d-flex align-items-center">
-				<img src="{{ cryptoSvgColor($deposit->benefactorWallet->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
-                        	<span class="text-truncate">{{ $deposit->benefactorWallet->address }}</span>
+				<img src="{{ cryptoSvgColor($deposit->transaction->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
+                        	<span class="text-truncate">{{ $deposit->transaction->receiver_address }}</span>
                       	    </div>
                     	</td>
 
               		<td class="text-xs text-center font-weight-bold">
-                      	    <span class="my-2 text-x">{{ $deposit->means }}</span>
+                      	    <span class="my-2 text-x">{{ $deposit->transaction->means }}</span>
 			</td>
 			<td class="text-xs text-center font-weight-bold">
-                      	    <a target="_blank" href="{{ $deposit->hash == null ? 'javascript;' : $deposit->link() }}" class="my-2 text-x">{{ $deposit->hash == null ? 'Link unvailable' : 'View on blockchain' }} &nbsp;&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                      	    <a target="_blank" href="{{ $deposit->transaction->tx == null ? 'javascript;' : $deposit->transaction->link() }}" class="my-2 text-x">{{ $deposit->transaction->hash == null ? 'Link unvailable' : 'View on blockchain' }} &nbsp;&nbsp;<i class="fas fa-external-link-alt"></i></a>
 			</td>
 
 			<td class="text-xs text-center font-weight-bold">
-                      	    <a href="manage-deposit-{{ $deposit->uuid }}" class="my-2 text-x">More details&nbsp;&nbsp;<i class="fas fa-external-link-alt d-none"></i></a>
+                      	    <a href="/account/admin/deposit/manage/{{ $deposit->id }}" class="my-2 text-x">More details&nbsp;&nbsp;<i class="fas fa-external-link-alt d-none"></i></a>
 			</td>
 					    		    </tr>
 		@endforeach

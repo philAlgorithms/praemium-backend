@@ -48,4 +48,21 @@ class Plan extends Model
 
         return $intervals;
     }
+
+    public function activeSubscriptions(Client $client)
+    {
+        return $client->planEarnings()->whereRelation('deposit', function($query){
+            $query->where('earning_completed', 1)
+                  ->whereRelation('plan', function($q){
+                    $q->where('id', $this->id);
+                });
+        });
+    }
+
+    public function activeEarning(Client $client)
+    {
+        $plan_subscriptions = $this->activeSubscriptions($client);
+
+        return array_sum($plan_subscriptions->pluck('amount')->toArray());
+    }
 }

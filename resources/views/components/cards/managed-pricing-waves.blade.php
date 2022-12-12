@@ -9,7 +9,7 @@
 		</x-general.tooltip-element-svg>
 		<x-general.tooltip-element-svg
 		    text="Withdraw from this plan" 
-		    link="/withdraw-funds">
+		    link="/account/withdrawal/withdraw">
 			<x-svg.basket color='dark' />
 		</x-general.tooltip-element-svg>
 	    </x-general.tooltip-dropdown>
