@@ -21,7 +21,7 @@ class MiscController extends Controller
 		];
 
 		$client = client();
-		$earnings = $client->planInterests()->get();
+		$earnings = $client->planInterests()->where('earned', 1)->get();
 		return view('dashboard.misc.home', compact(['scripts', 'client', 'earnings']));
     }
 
@@ -32,7 +32,7 @@ class MiscController extends Controller
 		];
 
 		$clients = Client::all();
-		$earnings = PlanEarning::all()->where('index', '!=', 0);
+		$earnings = PlanEarning::all()->where('index', '!=', 0)->where('earned', 1);
 		
 		return view('dashboard.misc.admin', compact(['scripts', 'clients', 'earnings']));
     }
@@ -44,7 +44,8 @@ class MiscController extends Controller
 		$scripts = [
 			'dashboard/js/plugins/choices.min.js',
 			'dashboard/js/plugins/sweetalert.min.js',
-			'dashboard/js/custom/edit-admin-profile.js'	
+			// 'dashboard/js/custom/edit-admin-profile.js',
+			'dashboard/js/custom/edit-profile.js'	
 		];
 
 		if(is_client()){
@@ -70,5 +71,4 @@ class MiscController extends Controller
 		];
 		return view('dashboard.misc.admin-profile',compact(['admin', 'wallets', 'scripts']));
 	}
-    
 }

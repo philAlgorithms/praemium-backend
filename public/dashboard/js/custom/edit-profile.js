@@ -54,7 +54,7 @@ $(document).ready(function () {
 				showLoading(that, load);
 				$.ajax({
 					type: "POST",
-					url: "/auth/wallet/delete",
+					url: "/auth/password/change",
 					headers: {
 						'Accept': 'application/json',
 						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),

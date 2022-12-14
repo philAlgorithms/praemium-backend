@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Deposit extends Model
@@ -26,6 +27,11 @@ class Deposit extends Model
     public function client(): BelongsTo
     {
         return $this->transaction->client();
+    }
+
+    public function referralEarning(): HasOne
+    {
+        return $this->hasOne(ReferralEarning::class);
     }
 
     public function approve(string|null $receiver_address, string $sender_address, string|null $tx)
@@ -88,6 +94,31 @@ class Deposit extends Model
             return $this->update([
                 'earning_completed' => 1
             ]);
+        }
+
+        else return false;
+    }
+
+    public function payReferral()
+    {
+        $client = Client::find($this->client->id);
+        $referrer = Client::find($client->referrer->id);
+
+        if(!$client->has_paid_referrer and !is_null($referrer)){
+            $earning = $this->referralEarning()->create();
+            try {
+                $transaction = $referrer->transactions()->create([
+                    'amount' => $this->transaction->amount/10,
+                    'transactionable_id' => $earning->id,
+                    'transactionable_type' => 'App\Models\ReferralEarning',
+                    'status_id' => Status::firstWhere('key', env('STATUS_SUCCESSFUL'))->id,
+                ]);
+
+                return $transaction;
+            }catch (Exception $e)
+            {
+                $earning->forceDelete();
+            }
         }
     }
 }

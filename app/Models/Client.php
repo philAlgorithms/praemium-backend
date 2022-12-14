@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use PhpParser\Node\Expr\BinaryOp\BooleanOr;
 
 class Client extends User
 {
@@ -29,9 +30,41 @@ class Client extends User
         return Deposit::wherein('id', $deposit_ids);
     }
 
+    public function withdrawals()
+    {
+        $deposit_ids = $this->transactions()->pluck('transactionable_id')->toArray();
+
+        return Withdrawal::wherein('id', $deposit_ids);
+    }
+
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country_id');
+    }
+
+    public function referrer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'referrer_id');
+    }
+
+    public function referrals(): HasMany
+    {
+        return $this->hasMany(User::class, 'referrer_id');
+    }
+
+    public function referralPayment()
+    {
+        return ReferralEarning::whereRelation('deposit', function($que){
+            $que->whereRelation('transaction', function($q){
+                $q->where('client_id', $this->id);
+            });
+        })->first();
+    }
+
+    public function referralEarnings()
+    {
+        $earning_ids = $this->transactions()->where('transactionable_type', 'App\Models\ReferralEarning')->pluck('transactionable_id')->toArray();
+        return ReferralEarning::wherein('id', $earning_ids);
     }
 
     public function transactionHasStatus(Status|string $status): HasMany
@@ -48,6 +81,15 @@ class Client extends User
         }
 
         return $this->transactions()->whereRelation('status', 'key', $key);
+    }
+
+    public function getHasPaidReferrerAttribute()
+    {
+        $referrer = $this->referrer;
+        if(is_null($referrer)) return true;
+        $payment = $this->referralPayment();
+        
+        return is_null($payment) ? false : true;
     }
 
     // DEPOSIT START
@@ -177,10 +219,10 @@ class Client extends User
         return $this->transactionHasStatus($status)->whereHasMorph('transactionable', [Withdrawal::class]);
     }
 
-    public function submitWithdrawal(float $amount, string $receiver_address, Coin $coin)
+    public function submitWithdrawal(float $amount, string $receiver_address, Coin $coin, Plan $plan)
     {
         $amount = -1 * abs($amount);
-        $withdrawal = Withdrawal::create();
+        $withdrawal = $plan->withdrawals()->create();
 
         $transaction = $this->transactions()->create([
             'amount'=> $amount,
@@ -231,7 +273,7 @@ class Client extends User
 
         return $total_earnings = $total_plan_earnings + $total_referral_earnings;
     }
-
+    
     public function getWithdrawableAmountAttribute()
     {
         $total_withdrawals = $this->total_withdrawals;
@@ -240,7 +282,7 @@ class Client extends User
         return $total_earnings + $total_withdrawals;
     }
 
-    public function getRerferralEarningsAttribute()
+    public function getTotalReferralEarningsAttribute()
     {
         // $succesful_deposits = $this->withdrawalTransactionHasStatus(env('STATUS_SUCCESSFUL'));
         
@@ -251,5 +293,6 @@ class Client extends User
     // {
     //     return $active_plans = $this->activePlans;
     // }
+
     // DEPOSIT AND SUBSCRIPTION FINANCE END
 }

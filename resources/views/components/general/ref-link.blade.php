@@ -6,7 +6,7 @@
                   <div class="d-flex flex-column h-100">
       <label class="">Referral link&nbsp;&nbsp;</label>              
 <div class="input-group" >
-        <input type="text" class="form-control" value="{{ URL::to('/sign-up/ref/'.auth()->user()->username) }}" disabled>
+        <input type="text" class="form-control" value="{{ URL::to('/register?ref='.auth()->user()->username) }}" disabled>
     </div>
                   </div>
                 </div>

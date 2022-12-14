@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\{Client, Coin, User, Wallet};
+use App\Notifications\General;
 use Illuminate\Support\Facades\URL;
 
 function appName(){
@@ -14,11 +15,13 @@ function is_auth()
 
 function is_admin()
 {
+	if(!is_auth()) return 0;
     return User::find(auth()->user()->id)->hasRole('admin');
 }
 
 function is_client()
 {
+	if(!is_auth()) return 0;
     return User::find(auth()->user()->id)->hasRole('client');
 }
 
@@ -253,6 +256,38 @@ function checkDatePast($datetime) {
 
     return $date < $now;
 }
+
+/*
+ * This function converts a unix timestamp to 'some moments ago' format 
+ * Set the $full variable to true if you want a complete description of the timestamp*/
+function time_elapsed_string($datetime, $full = false) {
+    $now = new \Datetime(gmdate("Y-m-d\TH:i:s\Z"));
+    $ago = new \Datetime($datetime);
+    $diff = $now->diff($ago);
+
+    $diff->w = floor($diff->d / 7);
+    $diff->d -= $diff->w * 7;
+
+    $string = array(
+	'y' => 'year',
+	'm' => 'month',
+	'w' => 'week',
+	'd' => 'day',
+	'h' => 'hour',
+	'i' => 'minute',
+	's' => 'second',
+    );
+    foreach ($string as $k => &$v) {
+	if ($diff->$k) {
+	    $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+	} else {
+	    unset($string[$k]);
+	}
+    }
+
+    if (!$full) $string = array_slice($string, 0, 1);
+    return $string ? implode(', ', $string) . ' ago' : 'just now';
+}
 // DATE HELPERS END
 
 
@@ -375,5 +410,17 @@ function getPricesByCoins($coins){
 	$client = new Codenixsv\CoinGeckoApi\CoinGeckoClient();
 	$data = $client->simple()->getPrice($coin_names, 'usd');
 	return $data;
+}
 
+function admins()
+{
+	return User::role('admin');
+}
+function admin_emails()
+{
+	return admins()->pluck('email')->toArray();
+}
+
+function notify($user, $notification){
+    return User::find($user->id)->notify(new General($notification));
 }

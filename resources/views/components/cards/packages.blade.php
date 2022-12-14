@@ -3,7 +3,7 @@
     	<div class="row">
       	    <div class="col-md-8 mx-auto text-center">
         	<h2>Explore the best plans for you</h2>
-        	<p><a href="/sign-up" >Register now</a> and start earning from your investments</p>
+        	<p><a href="/register" >Register now</a> and start earning from your investments</p>
       	    </div>
     	</div>
 	<div class="row">

@@ -2,15 +2,15 @@
     <div class="sidenav-header">
 	<i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       	<a class="navbar-brand m-0" href="/" target="_blank">
-            <img src="{{ URL::asset('dashboard/img/logo.png') }}" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold">{{ appName() }}</span>
+            <img src="{{ URL::asset('/static/img/logo.svg') }}" class="navbar-brand-img h-100" alt="main_logo">
+            {{-- <span class="ms-1 font-weight-bold">{{ appName() }}</span> --}}
       	</a>
     </div>
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto  max-heigh-vh-100 h-auto h-100" id="sidenav-collapse-main">
       	<ul class="navbar-nav">
             <li class="nav-item">
-          	<a class="nav-link  active" href="/my-dashboard">
+          	<a class="nav-link  active" href="/account">
 		    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
 		        <x-svg.shop/>
 		    </div>
@@ -33,7 +33,7 @@
                 	    </a>
                     	</li>
                     	<li class="nav-item">
-                      	    <a class="nav-link " href="/view-deposits">
+                      	    <a class="nav-link " href="/account/deposit/view">
                         	<span class="sidenav-mini-icon text-xs"> V </span>
                         	<span class="sidenav-normal"> View Deposits </span>
                       	    </a>
@@ -58,7 +58,7 @@
                 	    </a>
                     	</li>
                     	<li class="nav-item">
-                      	    <a class="nav-link " href="/view-withdrawals">
+                      	    <a class="nav-link " href="/account/withdrawal/view">
                         	<span class="sidenav-mini-icon text-xs"> V </span>
                         	<span class="sidenav-normal"> View Withdrawals </span>
                       	    </a>
@@ -76,23 +76,23 @@
           	<div class="collapse" id="earnings">
 		    <ul class="nav ms-4 ps-3 nav-sm flex-column">
                     	<li class="nav-item">
-                      	    <a class="nav-link" href="/plan-earnings">
+                      	    <a class="nav-link" href="/account/plan/earnings">
                         	<span class="sidenav-mini-icon text-xs"> P </span>
                         	<span class="sidenav-normal">Package earnings</span>
                 	    </a>
                     	</li>
                     	<li class="nav-item">
-                      	    <a class="nav-link " href="/referral-earnings">
+                      	    <a class="nav-link " href="/account/referral/earnings">
                         	<span class="sidenav-mini-icon text-xs"> R </span>
                         	<span class="sidenav-normal"> Referral Earnings </span>
                       	    </a>
 			</li>
-			<li class="nav-item">
+			{{-- <li class="nav-item">
                       	    <a class="nav-link " href="/referral-payments">
                         	<span class="sidenav-mini-icon text-xs"> R </span>
                         	<span class="sidenav-normal"> Referral Payments </span>
                       	    </a>
-                    	</li>
+                    	</li> --}}
 
                     </ul>
                 </div>
@@ -107,21 +107,21 @@
           	<div class="collapse" id="packages">
 		    <ul class="nav ms-4 ps-3 nav-sm flex-column">
                     	<li class="nav-item">
-                      	    <a class="nav-link" href="/plans">
+                      	    <a class="nav-link" href="/subscribe">
                         	<span class="sidenav-mini-icon text-xs"> V </span>
                         	<span class="sidenav-normal"> View Packages </span>
                 	    </a>
                     	</li>
-                    	<li class="nav-item">
+                    	{{-- <li class="nav-item">
                       	    <a class="nav-link " href="/my-packages">
                         	<span class="sidenav-mini-icon text-xs"> M </span>
                         	<span class="sidenav-normal"> My Packages </span>
-                      	    </a>
+                      	    </a> --}}
                     	</li>
                     </ul>
                 </div>
             </li>
-	    <li class="nav-item">
+	    {{-- <li class="nav-item">
         	<a data-bs-toggle="collapse" class="nav-link" href="#finance" aria-controls="finance" role="button" aria-expanded="false">
 	    	    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
 			<x-svg.credit-card/>
@@ -138,7 +138,7 @@
                     	</li>
                     </ul>
                 </div>
-	    </li>
+	    </li> --}}
 
 <li class="nav-item mt-3">
           	<h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
@@ -152,7 +152,7 @@
           	</a>
             </li>
             <li class="nav-item d-none">
-          	<a class="nav-link fixed-plugin-button" href="#">
+          	<a class="nav-link fixed-plugin-button" href="/profile">
             	    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
              		<x-svg.settings/> 
             	    </div>
@@ -160,7 +160,7 @@
           	</a>
             </li>
             <li class="nav-item">
-          	<a class="nav-link" href="/sign-out">
+          	<a class="nav-link" href="/signout">
             	    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               		<x-svg.spaceship />	
             	    </div>

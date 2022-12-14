@@ -55,7 +55,7 @@ class ViewServiceProvider extends ServiceProvider
 
         private function deactivateSubscriptions(Client $client)
         {
-            $active_subscriptions = $client->deposits()->where('earning_completed', 0);
+            $active_subscriptions = $client->deposits()->where('earning_completed', 0)->get();
 
             foreach($active_subscriptions as $subscription)
             {

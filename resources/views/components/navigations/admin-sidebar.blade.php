@@ -2,8 +2,8 @@
     <div class="sidenav-header">
 	<i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       	<a class="navbar-brand m-0" href="/" target="_blank">
-            <img src="{{ URL::asset('dashboard/img/logo.png') }}" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold">{{ appName() }}</span>
+            <img src="{{ URL::asset('/static/img/logo.svg') }}" class="navbar-brand-img h-100" alt="main_logo">
+            
       	</a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -64,7 +64,7 @@
                 	    </a>
                     	</li>
                     	<li class="nav-item">
-                      	    <a class="nav-link " href="/all-withdrawals">
+                      	    <a class="nav-link " href="/account/admin/withdrawal/all">
                         	<span class="sidenav-mini-icon text-xs"> V </span>
                         	<span class="sidenav-normal"> View Withdrawals </span>
                       	    </a>
@@ -85,7 +85,7 @@
 	    	    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
 			<x-svg.basket/>
 	    	    </div>
-            	    <span class="nav-link-text ms-1">Referrals</span>
+            	    <span class="nav-link-text ms-1">Earnings</span>
 	  	</a>
           	<div class="collapse" id="referrals">
 		    <ul class="nav ms-4 ps-3 nav-sm flex-column">
@@ -96,9 +96,15 @@
                 	    </a>
                     	</li>
                     	<li class="nav-item">
-                      	    <a class="nav-link " href="/admin-referrals">
+                      	    <a class="nav-link " href="/account/admin/referral/earnings">
                         	<span class="sidenav-mini-icon text-xs"> V </span>
                         	<span class="sidenav-normal"> Referral Earnings </span>
+                      	    </a>
+                    	</li>
+                    	<li class="nav-item">
+                      	    <a class="nav-link " href="/account/admin/plan/earnings">
+                        	<span class="sidenav-mini-icon text-xs"> V </span>
+                        	<span class="sidenav-normal"> Plan Earnings </span>
                       	    </a>
                     	</li>
                     </ul>
@@ -158,7 +164,7 @@
           	</a>
             </li>
             <li class="nav-item">
-          	<a class="nav-link" href="/admin-sign-out">
+          	<a class="nav-link" href="/signout">
             	    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               		<x-svg.spaceship />	
             	    </div>

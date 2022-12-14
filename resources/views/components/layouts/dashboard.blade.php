@@ -45,7 +45,7 @@
   	<script src="{{ URL::asset('dashboard/js/plugins/Chart.extension.js') }}"></script>
 
 
-	<script>
+	{{-- <script>
     	    var win = navigator.platform.indexOf('Win') > -1;
     	    if (win && document.querySelector('#sidenav-scrollbar')) {
       		var options = {
@@ -53,15 +53,28 @@
       		}
       		Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     	    }
-  	</script>
+  	</script> --}}
   	<!-- Github buttons -->
-  	<script async defer src="https://buttons.github.io/buttons.js"></script>
+  	{{-- <script async defer src="https://buttons.github.io/buttons.js"></script> --}}
   	<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 	<script src="{{ URL::asset('dashboard/js/soft-ui-dashboard.min.js') }}"></script>
 	<script src="{{ URL::asset('dashboard/js/custom/general.js') }}"></script>
     @foreach ($scripts as $script)
 	<script src="{{ URL::asset($script) }}"></script>
     @endforeach
-	<script src="//code.tidio.co/0jeqdo9pyebcciroybposeshw2jmvw5m.js" async></script>
+    <script src="{{ URL::asset('dashboard/js/custom/vendors.js') }}"></script>
+	<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+	var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+	s1.async=true;
+	s1.src='https://embed.tawk.to/63968cabb0d6371309d3e8ca/1gk21b0jq';
+	s1.charset='UTF-8';
+	s1.setAttribute('crossorigin','*');
+	s0.parentNode.insertBefore(s1,s0);
+	})();
+	</script>
+	<!--End of Tawk.to Script-->
     </body>
 </html>

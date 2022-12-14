@@ -1,26 +1,26 @@
 <x-cards.stat
 		    text='Total Deposits'
 		    :amount='dollar(client()->total_deposits)'
-		    increment='20%'
+		    increment=''
 		    icon='ni ni-money-coins'
 		/>
 		<x-cards.stat
 		    text='Withdrawable amount'
-		    :amount='dollar(200)'
-		    increment='20'
+		    :amount='dollar(client()->withdrawable_amount)'
+		    increment=''
 		    icon='fas fa-credit-card'
 		/>
 
 		<x-cards.stat
-		    text='Active Plan Earnings'
-		    :amount='dollar(700)'
-		    increment="700"
+		    text='Total Plan Earnings'
+		    :amount='dollar(client()->total_plan_earnings)'
+		    increment=""
 		    icon='fas fa-money-bill-alt'
 		/>
 
 		<x-cards.stat
 		    text='Referal bonus'
-		    :amount='dollar(900)'
-		    increment='13'
+		    :amount='dollar(client()->referral_earnings)'
+		    increment=''
 		    icon='fas fa-hand-holding-usd'	
 		/>

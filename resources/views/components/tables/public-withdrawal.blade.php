@@ -44,14 +44,14 @@
 
                     	<td class="text-xs font-weight-bold">
                       	    <div class="d-flex align-items-center">
-                            	<button class="btn btn-icon-only btn-rounded btn-{{ $withdrawal->status->color }} mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i class="{{ $withdrawal->status->icon }}" aria-hidden="true"></i></button>
-                        	<span>{{ $withdrawal->status->name }}</span>
+                            	<button class="btn btn-icon-only btn-rounded btn-{{ $withdrawal->transaction->status->color }} mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i class="{{ $withdrawal->transaction->status->icon }}" aria-hidden="true"></i></button>
+                        	<span>{{ $withdrawal->transaction->status->name }}</span>
                             </div>
 			</td>
 
 			<td class="text-xs font-weight-bold">
                       	    <div class="d-flex align-items-center">
-				<img src="{{ cryptoSvgColor($withdrawal->benefactorWallet->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
+				<img src="{{ cryptoSvgColor($withdrawal->transaction->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
                         	<span>{{ $withdrawal->sender_address }}</span>
                       	    </div>
                     	</td>
@@ -59,8 +59,8 @@
 
                     	<td class="text-xs font-weight-bold">
                       	    <div class="d-flex align-items-center">
-				<img src="{{ cryptoSvgColor($withdrawal->benefactorWallet->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
-                        	<span>{{ $withdrawal->benefactorWallet->address }}</span>
+				<img src="{{ cryptoSvgColor($withdrawal->transaction->coin->code) }}" class="avatar avatar-xs me-2" alt="user image">
+                        	<span>{{ $withdrawal->transaction->address }}</span>
                       	    </div>
                     	</td>
 			<td class="text-xs text-center font-weight-bold">

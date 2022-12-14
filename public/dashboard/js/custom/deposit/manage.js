@@ -11,7 +11,6 @@ $(document).ready(function () {
 	var exchange = $("#exchange");
 	var tid = $("#tid");
 	var uuid = $("#uuid");
-
 	var token = $('[name="_token"]').val();
 
 	submit.click(function () {
@@ -47,13 +46,12 @@ $(document).ready(function () {
 				_token: token
 			},
 			error: function (err) {
-				var error = err.responseJSON; aJ(error);
+				var error = err.responseJSON;
 				hideLoading(thatBtn, loading);
 				enableInput(cancel);
 				handleCommonErrors(error);
 			},
 			success: function (data) {
-				aJ(data);
 				hideLoading(thatBtn, loading);
 				enableInput(cancel);
 				Swal.fire(

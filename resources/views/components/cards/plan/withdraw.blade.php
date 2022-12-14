@@ -3,8 +3,8 @@
 	<div class="card-header bg-gradient-{{ $plan->color }} text-center pt-4 pb-5 position-relative">
 	    <x-general.tooltip-dropdown class="col-12 text-end">
 		<x-general.tooltip-element-svg 
-		    text="Deposit with this plan" 
-		    link="/deposit-funds">
+		    text="Withdrawals" 
+		    link="#">
 			<x-svg.credit-card color="dark" />
 		</x-general.tooltip-element-svg>
 		<x-general.tooltip-element-svg
@@ -28,28 +28,29 @@
             </div>
       	</div>
 	<div class="card-body text-center">
-	    {{-- <h6 class="text- mb-2">For every {{ dollar($plan->cost) }} subscription, you get:</h6> --}}
+	    {{-- <h6 class="text- mb-2">For every {{ dollar($plan->cost) }} withdrawal, you get:</h6> --}}
             <ul class="list-unstyled max-width-200 mx-auto">
-		<li>
-		    <b><small>$</small>{{ noSigil($plan->min) }}</b> Minimum Deposit 
-            	    <hr class="horizontal dark">
-          	</li>
-          	<li>
-            	    <b><small>$</small>{{ $plan->max < env('MAX_AMOUNT') ? noSigil($plan->max) : 'Unlimited' }}</b> Maximum Deposit
-            	    <hr class="horizontal dark">
-          	</li>
-            <li>
-                <b><small>$</small>{{ noSigil($plan->activeEarning($client)) }}</b> Minimum Deposit 
-                        <hr class="horizontal dark">
-                  </li>
-          	<li>
-            	10% Referral Bonus
-          	</li>
+				<li>
+					<b><small>$</small>{{ noSigil($plan->subscriptionEarning($client)) }}</b> Plan earning 
+					<hr class="horizontal dark">
+				</li>
+				<li>
+                	<b><small>$</small>{{ noSigil($plan->totalReferralEarning($client)) }}</b> Referral earning
+                    <hr class="horizontal dark">
+                </li>
+				<li class="mb-1">
+					<b><small></small>{{ noSigil($plan->totalWithdrawals($client)) }}</b> Plan Withdrawals 
+					<hr class="horizontal dark">
+				</li>
+            	<li>
+                	{{-- <b><small>$</small>{{ noSigil($plan->activeEarning($client)) }}</b> Total active earning  --}}
+                    <hr class="horizontal dark">
+                </li>
             </ul>
-            <button class="btn bg-gradient-dark w-100 mt-4 mb-0 check-btn  plan-button" data-bs-toggle="modal" data-bs-target="#subscribe-modal" data-id="{{ $plan->id }}" data-name="{{ $plan->name }}">
+            <button class="btn bg-gradient-dark w-100 mt-4 mb-0 check-btn  plan-button" data-bs-toggle="modal" data-bs-target="#withdraw-modal" data-id="{{ $plan->id }}" data-name="{{ $plan->name }}">
 				Withdraw Now
 			</button>
-	        <x-modals.plan-subscription :plan=$plan />
+	        {{-- <x-modals.plan-withdrawal :plan=$plan /> --}}
 	
 			<button class="btn bg-gradient-primary w-100 mt-4 mb-0 loading-btn d-none" type="button" disabled>
 				<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

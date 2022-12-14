@@ -69,7 +69,7 @@
                             		<x-svg.customer-support /> 
                           	    </div>
                         	</div>
-				<a href="/sign-in" class="dropdown-item border-radius-md">
+				<a href="/login" class="dropdown-item border-radius-md">
 			   	    <span class="">Sign in</span>
 				</a>
                       	    </h6>
@@ -80,7 +80,7 @@
                             		<x-svg.spaceship /> 
                           	    </div>
                         	</div>
-				<a href="/sign-up" class="dropdown-item border-radius-md">
+				<a href="/register" class="dropdown-item border-radius-md">
 			    	    <span class="">Register</span>
 				</a>
                       	    </h6>
@@ -92,7 +92,7 @@
                            		<x-svg.customer-support /> 
                           	    </div>
                         	</div>
-				<a href="/sign-in" class="dropdown-item border-radius-md">
+				<a href="/login" class="dropdown-item border-radius-md">
 			    	    <span class="">Sign in</span>
 				</a>
 		      	    </h6>
@@ -102,7 +102,7 @@
                            		<x-svg.spaceship /> 
                           	    </div>
                         	</div>
-				<a href="/sign-up" class="dropdown-item border-radius-md">
+				<a href="/register" class="dropdown-item border-radius-md">
 			    	    <span class="">Register</span>
 				</a>
 		      	    </h6>  
@@ -145,7 +145,7 @@
                            		<x-svg.customer-support /> 
                           	    </div>
                         	</div>
-				<a href="/sign-in" class="dropdown-item border-radius-md">
+				<a href="/login" class="dropdown-item border-radius-md">
 			    	    <span class="">About us</span>
 				</a>
 		      	    </h6>
@@ -155,7 +155,7 @@
                            		<x-svg.spaceship /> 
                           	    </div>
                         	</div>
-				<a href="/sign-up" class="dropdown-item border-radius-md">
+				<a href="/register" class="dropdown-item border-radius-md">
 			    	    <span class="">FAQ</span>
 				</a>
 		      	    </h6>  
@@ -165,7 +165,7 @@
 	    </ul> 
 	    <ul class="navbar-nav d-lg-block d-none"> 
 		<li class="nav-item"> 
-		    <a href="/sign-up" class="btn btn-sm bg-gradient-primary btn-round mb-0 me-1" onclick="smoothToPricing('pricing-soft-ui')">
+		    <a href="/register" class="btn btn-sm bg-gradient-primary btn-round mb-0 me-1" onclick="smoothToPricing('pricing-soft-ui')">
 			Register
 		    </a> 
 		</li> 

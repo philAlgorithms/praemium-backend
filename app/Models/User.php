@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -50,8 +51,33 @@ class User extends Authenticatable
         return $this->hasMany(Wallet::class, 'user_id');
     }
 
+    public function WalletCoins()
+    {
+        return Coin::whereRelation('wallets', function($query){
+            $query->whereRelation('user', function($q){
+                $q->where('id', $this->id);
+            });
+        });
+    }
+
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country_id');
+    }
+
+    public function send_mail($subject, $view, $param, $bcc=null){
+        if(is_null($bcc)){
+        Mail::to($this->email)
+            ->send(new \App\Mail\General($param, $subject, $view));
+        }else{
+        Mail::to($this->email)
+            ->bcc($bcc)
+            ->send(new \App\Mail\General($param, $subject, $view));
+        }
+    }
+
+    public function getAvatarAttribute()
+    {
+        return 'img/avatars/avatar.jpg';
     }
 }

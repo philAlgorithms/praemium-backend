@@ -35,7 +35,6 @@ class DepositController extends Controller
 
 		$gecko = new CoinGeckoClient();
 
-
 		$amount = $request->amount;
 
 		$wallet = Wallet::whereRelation('user', function($query){
@@ -47,7 +46,7 @@ class DepositController extends Controller
 
 		$plan = Plan::find($request->plan);
 
-		$coin_price = $gecko->simple()->getPrice($coin->name, 'usd')[$coin->name]['usd'];
+		$coin_price = $gecko->simple()->getPrice($coin->coinlib_name, 'usd')[$coin->coinlib_name]['usd'];
 		$price = dp($amount/$coin_price, 5);
 		
 		$payLink = 'https://link.trustwallet.com/send?asset=c' . $coin->trust_wallet_id . '&address=' . $wallet->address . '&amount=' . $price;
@@ -83,5 +82,31 @@ class DepositController extends Controller
 		if(is_null($deposit)) abort(404);
 
         return view('dashboard.deposit.manage', compact(['scripts', 'deposit']));
+    }	
+	
+	public function view()
+    {
+		$client = client();
+		
+		$deposits = $client->deposits()->get();
+
+		$scripts= [
+			'dashboard/js/plugins/datatables.js',
+			'dashboard/js/custom/view-deposits.js'
+		];
+		return view('dashboard.deposit.view',compact(['client','deposits', 'scripts']));
+    }
+	
+	public function details($id)
+    {
+        $scripts = [
+			'dashboard/js/plugins/sweetalert.min.js',
+			'dashboard/js/custom/deposit/manage.js',
+		];
+		$client = client();
+		$deposit = $client->deposits()->firstWhere('id', $id);
+		if(is_null($deposit)) abort(404);
+
+        return view('dashboard.deposit.details', compact(['client', 'scripts', 'deposit']));
     }
 }

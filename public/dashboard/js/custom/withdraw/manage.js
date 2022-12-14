@@ -10,8 +10,7 @@ $(document).ready(function(){
     var hash = $("#hash");
     var exchange = $("#exchange");
     var tid = $("#tid");
-    var uuid = $("#uuid");
-   var token = $('[name="_token"]').val();
+   	var token = $('[name="_token"]').val();
 	
     submit.click(function(){
 	aJ({
@@ -21,53 +20,51 @@ $(document).ready(function(){
 	    sender: sender.val(),
 	    hash: hash.val(),
 	    exchange: exchange.val(),
-	    id: tid.val(),
-	    uuid: uuid.val()
-	}, true);
+	    id: tid.val()
+	});
 	var thatBtn = $(this);
 
-        showLoading($(this), loading);
+    showLoading($(this), loading);
 	disableInput(cancel);
 
 	$.ajax({
 	    type:"POST",
-	    url:"api/accept-withdrawal",
+	    url:"/admin/withdrawal/approve",
 	    headers: {
-            	'Accept': 'application/json',
+            'Accept': 'application/json',
 	    	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	    },
 	    data: {
-		password: password.val(),
+			password: password.val(),
 	    	amount: amount.val(),
 	    	charge: charge.val(),
 	    	sender_address: sender.val(),
 	    	hash: hash.val(),
 	    	exchange: exchange.val(),
-	    	id: tid.val(),
-	    	uuid: uuid.val(),
-		_token: token
-	   },
+	    	withdrawal_id: tid.val(),
+			_token: token
+	   	},
 	    error: function(err){ aJ(err,true);
 	    	var error = err.responseJSON;
-		hideLoading(thatBtn, loading);
-		enableInput(cancel);
-		handleCommonErrors(error);
+			hideLoading(thatBtn, loading);
+			enableInput(cancel);
+			handleCommonErrors(error);
 	    },
 	    success:function(data){
 		    aJ(data,true);
-		hideLoading(thatBtn, loading);
-		enableInput(cancel);
-		Swal.fire(
+			hideLoading(thatBtn, loading);
+			enableInput(cancel);
+			Swal.fire(
       		    'Successful',
       		    data.message,
       		    'success'
-		);
-		location.reload();
+			);
+			location.reload();
 	    }
-    	});
     });
+});
 
-   cancel.click(function(){
+cancel.click(function(){
 	$("#accept-withdrawal").modal('hide');
    });
 });

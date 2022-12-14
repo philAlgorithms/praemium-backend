@@ -24,11 +24,11 @@
                 	    </div>
                 	    <div>
 				<h6 class="text-lg mb-0 mt-2">{{ $deposit->transaction->coin->display_name }} deposit</h6>
-				<p class="text-sm mb-3">{{ $deposit->transaction->status->name == 'Successful' ? 
+				<p class="text-sm mb-3">{{ $deposit->transaction->status->key == env('STATUS_SUCCESSFUL') ? 
 	'Deposit was confirmed '.readFullTime($deposit->transaction->updated_at) :
-	($deposit->transaction->status->name == 'Pending' ? 
+	($deposit->transaction->status->key == env('STATUS_PENDING') ? 
 		'Awaiting transaction' :
-		'Request is declined') }}</p>          		
+		($deposit->transaction->status->key == env('STATUS_PROCESSING') ? 'Transaction Processing' :'Request is declined')) }}</p>          		
 				<span class="badge badge-sm bg-gradient-{{ $deposit->transaction->status->color }}">{{ $deposit->transaction->status->name }}</span>
                     	    </div>
             		</div>

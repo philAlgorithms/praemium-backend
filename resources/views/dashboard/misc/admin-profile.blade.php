@@ -19,6 +19,10 @@
 		    class="col-12 col-md-6 h-100 mt-4"
 		/>
 	    </div>
+		<div id="settings" class="row mt-5">
+			{{-- <x-cards.auth-settings /> --}}
+			<x-cards.password-settings />
+			</div>
 	    <x-navigations.dashboard-footer />
 	</div>
     </div>

@@ -2,14 +2,14 @@
 @foreach (auth()->user()->notifications as $i=>$notification)
     @if ($i > 3) @break @endif
     <li>
-    	<a class="dropdown-item border-radius-md" href="{{ $notification->data['admin_url'] }}">
+    	<a class="dropdown-item border-radius-md" href="{{ $notification->data['url'] }}">
             <div class="d-flex py-1">
                 <div class="avatar avatar-sm bg-gradient-{{ $notification->data['color'] }}  me-3  my-auto">
                     <i class="{{ $notification->data['icon'] }}"></i> 
                 </div>
                 <div class="d-flex flex-column justify-content-center">
                     <h6 class="text-sm font-weight-normal mb-1">
-			{{ $notification->data['admin_text'] }}
+			{{ $notification->data['text'] }}
                     </h6>
                     <p class="text-xs text-secondary mb-0">
                         <i class="fa fa-clock me-1"></i>
@@ -21,7 +21,7 @@
     </li>
 @endforeach
  <li class="text-center">
-	<a class="dropdown-item border-radius-md" href="/admin-notifications">
+	<a class="dropdown-item border-radius-md" href="#">
 	    View all
 	</a>
     </li> 

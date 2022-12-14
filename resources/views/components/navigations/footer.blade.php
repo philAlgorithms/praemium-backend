@@ -44,12 +44,12 @@
               		</li>
 
               		<li class="nav-item">
-                	    <a class="nav-link text-{{ $color === 'white' ? 'dark' : 'white' }} opacity-8 text-sm pb-0" href="/sign-in">
+                	    <a class="nav-link text-{{ $color === 'white' ? 'dark' : 'white' }} opacity-8 text-sm pb-0" href="/login">
                   		Login
                 	    </a>
               		</li>
               		<li class="nav-item">
-                	    <a class="nav-link text-{{ $color === 'white' ? 'dark' : 'white' }} opacity-8 text-sm pb-0" href="/sign-up">
+                	    <a class="nav-link text-{{ $color === 'white' ? 'dark' : 'white' }} opacity-8 text-sm pb-0" href="/register">
                   		Register
                 	    </a>
               		</li>

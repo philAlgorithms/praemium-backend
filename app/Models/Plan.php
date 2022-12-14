@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Plan extends Model
 {
@@ -12,6 +13,16 @@ class Plan extends Model
 
     public function period(){
     	return $this->belongsTo(Period::class);
+    }
+
+    public function deposits(): HasMany
+    {
+    	return $this->hasMany(Deposit::class);
+    }
+
+    public function withdrawals(): HasMany
+    {
+    	return $this->hasMany(Withdrawal::class);
     }
 
     public function duration(){
@@ -49,6 +60,23 @@ class Plan extends Model
         return $intervals;
     }
 
+    public function approvedWithdrawals(Client $client)
+    {
+        return $client->withdrawalTransactionHasStatus(env('STATUS_SUCCESSFUL'))
+                      ->whereHasMorph('transactionable', [Withdrawal::class], function($query){
+                        $query->whereHas('plan', function($que){
+                            $que->where('id', $this->id);
+                        });
+                      });
+    }
+
+    public function totalWithdrawals(Client $client)
+    {
+        $approved_withdrawals = $this->approvedWithdrawals($client);
+
+        return array_sum($approved_withdrawals->pluck('amount')->toArray());
+    }
+
     public function activeSubscriptions(Client $client)
     {
         return $client->planEarnings()->whereRelation('deposit', function($query){
@@ -59,10 +87,22 @@ class Plan extends Model
         });
     }
 
-    public function activeEarning(Client $client)
+    public function subscriptionEarning(Client $client)
     {
         $plan_subscriptions = $this->activeSubscriptions($client);
 
         return array_sum($plan_subscriptions->pluck('amount')->toArray());
+    }
+
+    public function totalReferralEarning(Client $client)
+    {
+        return 0.00;
+    }
+
+    public function activeEarning(Client $client)
+    {
+        return $this->subscriptionEarning($client) 
+        + $this->totalReferralEarning($client)
+        + $this->totalWithdrawals($client);
     }
 }

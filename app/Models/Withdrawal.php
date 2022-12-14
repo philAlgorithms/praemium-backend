@@ -21,8 +21,13 @@ class Withdrawal extends Model
         return $this->transaction->client();
     }
 
+    public function plan(): BelongsTo
+    {
+        return $this->belongsTo(Plan::class);
+    }
+
     public function approve(string|null $receiver_address, string $sender_address, string|null $tx)
     {
-        return $this->transaction->approveDeposit(receiver_address: $receiver_address, sender_address: $sender_address, tx: $tx);
+        return $this->transaction->approveWithdrawal(receiver_address: $receiver_address, sender_address: $sender_address, tx: $tx);
     }
 }

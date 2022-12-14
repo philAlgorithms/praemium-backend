@@ -35,48 +35,45 @@
           		</div>
         	    </div>
       		</div>
-    	    </div>
+    	</div>
 	</div>
-
 	<div class="mt-n8">
-    	    <div class="container">
+    	<div class="container">
       		<div class="tab-content tab-space">
         	    <div class="tab-pane active" id="monthly">
-			<div class="row">
-			@foreach ($plans as $plan)
-			    <x-cards.plan.withdraw
-				class="col-md-6 col-lg-4 mb-4"
-				:plan=$plan
-				:client=$client
-			    >
-				{{ ucfirst($plan->period->adverb)}} for 1 {{ $plan->duration->singular }}
-			    </x-cards.plan.withdraw>	
-			@endforeach
-			<x-modals.dashboard-subscribe />
+					<div class="row">
+					@foreach ($plans as $plan)
+						<x-cards.plan.withdraw
+							class="col-md-6 col-lg-4 mb-4"
+							:plan=$plan
+							:client=$client
+							>
+							{{ ucfirst($plan->period->adverb)}} for 1 {{ $plan->duration->singular }}
+						</x-cards.plan.withdraw>	
+					@endforeach
+					<x-modals.dashboard-withdraw />
+					</div>
+					</div>
+				</div>
 			</div>
-		    </div>
 		</div>
-	    </div>
-	</div>
-	<div class="container-fluid py-4">
-	    <div class="row">
-		<div class="col-12 col-md-6">
-		    <div class="row">
-		<x-cards.general-stat />
-	    
-		    </div>
+		<div class="container-fluid py-4">
+			<div class="row">
+				<div class="col-12 col-md-6">
+					<div class="row">
+						<x-cards.general-stat />
+					</div>
+				</div>
+				<x-cards.coin-stat
+					class="col-12 col-md-6">
+
+				</x-cards.coins-stat>
+	
+			</div>
+			<div class="row mt-4">
+
+			</div>
+	    	<x-navigations.dashboard-footer />
 		</div>
-		<x-cards.coin-stat
-		    class="col-12 col-md-6">
-
-		</x-cards.coins-stat>
-	    
-	    </div>
-	    <div class="row mt-4">
-
-	    </div>
-	    <x-navigations.dashboard-footer />
-	</div>
     </main>
-    <?php /*<x-general.settings/>*/ ?>
 </x-layouts.dashboard >

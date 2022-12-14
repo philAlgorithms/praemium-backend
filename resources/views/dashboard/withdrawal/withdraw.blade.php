@@ -22,7 +22,7 @@
 			/>
 			<x-cards.stat
 		    	    text='Total withdrawals'
-		    	    :amount="dollar(0)"
+		    	    :amount="dollar($client->total_withdrawal)"
 		    	    increment=""
 		    	    icon='fas fa-credit-card'
 		    	    class='col-12 mb-3'

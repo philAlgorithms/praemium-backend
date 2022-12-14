@@ -58,7 +58,7 @@ $(document).ready(function () {
 	$(".delete-wallet").click(function () {
 		var that = $(this);
 		var wid = stringAfter($(this).attr('id'), '-');
-		alert(wid);
+	
 		Swal.fire({
 			title: 'Are you sure?',
 			text: "You won't be able to revert this!",
@@ -107,6 +107,56 @@ $(document).ready(function () {
 						);
 
 						that.closest(".wallet-wrapper").remove();
+					}
+				});
+
+			}
+		});
+	});
+
+	$("#change-password").click(function () {
+		var that = $(this);
+		var load = $("#loading-password");
+
+		Swal.fire({
+			title: 'Are you sure?',
+			text: "Password will be changed!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Change password'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				showLoading(that, load);
+				$.ajax({
+					type: "POST",
+					url: "/auth/password/change",
+					headers: {
+						'Accept': 'application/json',
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+					},
+					error: function (err) {
+						hideLoading(that, load);
+						var error = err.responseJSON;
+						handleCommonErrors(error);
+					},
+					data: {
+						current_password: $("#current_password").val(),
+						new_password: $("#new_password").val(),
+						confirm_password: $("#confirm_password").val(),
+						otp: $("#otp").val(),
+						_token: token
+					},
+					success: function (data) {
+						hideLoading(that, load);
+						Swal.fire(
+							'Succesful!',
+							'Password changed',
+							'success'
+						);
+
+						clearFields();
 					}
 				});
 

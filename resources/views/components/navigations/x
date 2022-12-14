@@ -3,7 +3,7 @@
 	<a class="navbar-brand font-weight-bolder ms-sm-3" href="/" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
 	    {{ appName() }}
 	</a> 
-	<a href="/sign-up" class="btn btn-sm bg-gradient-primary btn-round mb-0 ms-auto d-lg-none d-block">
+	<a href="/register" class="btn btn-sm bg-gradient-primary btn-round mb-0 ms-auto d-lg-none d-block">
 	    Register
 	</a>
 	<button class="navbar-toggler shadow-none ms-md-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation"> 
@@ -341,16 +341,16 @@
 					    <img src="./assets/img/down-arrow.svg" alt="down-arrow" class="arrow"> 
 					</a> 
 					<div class="dropdown-menu mt-0 py-3 px-2" aria-labelledby="dropdownSignIn"> 
-					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/sign-in/sign-in-cover.html"> 
+					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="/login"> 
 						<span>Side Cover</span> 
 					    </a> 
-					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/sign-in/sign-in-illustration.html"> 
+					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="/login"> 
 						<span>Illustration</span> 
 					    </a> 
-					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/sign-in/sign-in-basic.html"> 
+					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="/login"> 
 						<span>Basic</span> 
 					    </a> 
-					    <a class="dropdown-item ps-3 border-radius-md" href="./pages/sign-in/sign-in-simple.html"> 
+					    <a class="dropdown-item ps-3 border-radius-md" href="/login"> 
 						<span>Simple</span> 
 					    </a> 
 					</div> 
@@ -361,16 +361,16 @@
 					    <img src="./assets/img/down-arrow.svg" alt="down-arrow" class="arrow"> 
 					</a> 
 					<div class="dropdown-menu mt-0 py-3 px-2" aria-labelledby="dropdownSignUp"> 
-					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/sign-up/sign-up-cover.html"> 
+					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/register/register-cover.html"> 
 						<span>Side Cover</span> 
 					    </a> 
-					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/sign-up/sign-up-illustration.html"> 
+					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/register/register-illustration.html"> 
 						<span>Illustration</span> 
 					    </a> 
-					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/sign-up/sign-up-basic.html"> 
+					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/register/register-basic.html"> 
 						<span>Basic</span> 
 					    </a> 
-					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/sign-up/sign-up-simple.html"> 
+					    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./pages/register/register-simple.html"> 
 						<span>Simple</span> 
 					    </a> 
 					</div> 
@@ -422,15 +422,15 @@
 			<div class="row d-lg-none"> 
 			    <div class="col-12 d-flex justify-content-center flex-column">
 				<h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center px-0"> Sign In </h6> 
-				<a href="./pages/sign-in/sign-in-cover.html" class="dropdown-item border-radius-md"> Side Cover </a> 
-				<a href="./pages/sign-in/sign-in-illustration.html" class="dropdown-item border-radius-md"> Illustration </a> 
-				<a href="./pages/sign-in/sign-in-basic.html" class="dropdown-item border-radius-md"> Basic </a> 
-				<a href="./pages/sign-in/sign-in-simple.html" class="dropdown-item border-radius-md"> Simple </a> 
+				<a href="/login" class="dropdown-item border-radius-md"> Side Cover </a> 
+				<a href="/login" class="dropdown-item border-radius-md"> Illustration </a> 
+				<a href="/login" class="dropdown-item border-radius-md"> Basic </a> 
+				<a href="/login" class="dropdown-item border-radius-md"> Simple </a> 
 				<h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center mt-3 px-0"> Sign Up </h6> 
-				<a href="./pages/sign-up/sign-up-cover.html" class="dropdown-item border-radius-md"> Side Cover </a> 
-				<a href="./pages/sign-up/sign-up-illustration.html" class="dropdown-item border-radius-md"> Illustration </a> 
-				<a href="./pages/sign-up/sign-up-basic.html" class="dropdown-item border-radius-md"> Basic </a> 
-				<a href="./pages/sign-up/sign-up-simple.html" class="dropdown-item border-radius-md"> Simple </a> 
+				<a href="./pages/register/register-cover.html" class="dropdown-item border-radius-md"> Side Cover </a> 
+				<a href="./pages/register/register-illustration.html" class="dropdown-item border-radius-md"> Illustration </a> 
+				<a href="./pages/register/register-basic.html" class="dropdown-item border-radius-md"> Basic </a> 
+				<a href="./pages/register/register-simple.html" class="dropdown-item border-radius-md"> Simple </a> 
 				<h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center mt-3 px-0"> Password Reset </h6> 
 				<a href="./pages/reset/reset-cover.html" class="dropdown-item border-radius-md"> Side Cover </a> 				<a href="./pages/reset/reset-illustration.html" class="dropdown-item border-radius-md"> Illustration </a> 
 				<a href="./pages/reset/reset-basic.html" class="dropdown-item border-radius-md"> Basic </a> 

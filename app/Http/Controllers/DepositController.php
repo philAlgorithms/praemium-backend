@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Deposit;
 use App\Http\Requests\StoreDepositRequest;
 use App\Http\Requests\UpdateDepositRequest;
+use App\Models\Admin;
 use App\Models\Client;
 use App\Models\Coin;
 use App\Models\Plan;
@@ -79,9 +80,37 @@ class DepositController extends BaseController
             return $this->sendError(error:'Transaction not found', errorMessages:'Transaction does not exist', code:404);
         }
 
-        $approved_deposit = $deposit->completeSubscription(receiver_address: request('receiver_address'), sender_address: request('sender_address'), tx: request('transaction_hash'));
+        $completed_deposit = $deposit->completeSubscription(receiver_address: request('receiver_address'), sender_address: request('sender_address'), tx: request('transaction_hash'));
 
-        return $this->sendResponse($approved_deposit, "Subscription successful");
+        $email_param = [
+            'name'=>$user->name,
+            'plan'=>$deposit->plan->name,
+            'deposit'=>$deposit->transaction->amount.' USD',
+        ];
+        $user->send_mail(subject: "Subscription Saved", view:"emails.deposits.submit", param:$email_param, bcc: admin_emails());
+
+        $notification = [
+            'title'=>'Deposit Request',
+            'icon'=>'fas fa-donate',
+            'color'=>'secondary'
+        ];
+
+        $admin_notification = [
+            'text' => $user->name.' deposited '.dollar($transaction->amount),
+            'url' => "/account/admin/deposit/manage/".$deposit->id,
+            ...$notification
+        ];
+        $client_notification = [
+            'text' => 'Your deposit request has been received',
+            'url' => "/account/client/deposit/view/".$deposit->id,
+            ...$notification
+        ];
+    
+        notify($user, $client_notification);
+        foreach(admins()->get() as $admin){
+            notify($admin, $admin_notification);
+        }
+        return $this->sendResponse($completed_deposit, "Subscription successful");
     }
     public function subscribe()
     {
@@ -167,9 +196,16 @@ class DepositController extends BaseController
             return $this->sendError(error:'Transaction not found', errorMessages:'Transaction does not exist', code:404);
         }
         
+        $user = $deposit->transaction->client;
         $approved_deposit = $deposit->approve(receiver_address: request('receiver_address'), sender_address: request('sender_address'), tx: request('transaction_hash'));
-
-        return $this->sendResponse($approved_deposit, "client Registration successful");
+        $email_param = [
+            'name'=>$user->name,
+            'plan'=>$deposit->plan->name,
+            'deposit'=>$deposit->transaction->amount.' USD',
+        ];
+        $user->send_mail(subject: "Subscription Approved", view:"emails.deposits.success", param:$email_param, bcc: admin_emails());
+        
+        return $this->sendResponse($approved_deposit, "Deposit Approved successful");
     }
 
     /**

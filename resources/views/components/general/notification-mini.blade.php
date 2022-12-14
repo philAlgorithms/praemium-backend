@@ -21,7 +21,7 @@
     </li>
 @endforeach
     <li class="text-center">
-	<a class="dropdown-item border-radius-md" href="/notifications">
+	<a class="dropdown-item border-radius-md" href="#">
 	    View all
 	</a>
     </li> 
