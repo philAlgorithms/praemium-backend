@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pages;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Client;
+use App\Models\Plan;
 use App\Models\PlanEarning;
 use App\View\Components\Cards\Earnings;
 use App\View\Components\Tables\PlanEarnings;
@@ -35,6 +36,16 @@ class MiscController extends Controller
 		$earnings = PlanEarning::all()->where('index', '!=', 0)->where('earned', 1);
 		
 		return view('dashboard.misc.admin', compact(['scripts', 'clients', 'earnings']));
+    }
+
+	public function admin_view_plans(Request $request){
+		$scripts = [
+			'dashboard/js/plugins/sweetalert.min.js'
+		];
+
+		$plans = Plan::all();
+		
+		return view('dashboard.misc.plans', compact(['scripts', 'plans']));
     }
 
 	public function profile()

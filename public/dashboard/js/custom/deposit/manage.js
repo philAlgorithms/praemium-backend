@@ -14,16 +14,6 @@ $(document).ready(function () {
 	var token = $('[name="_token"]').val();
 
 	submit.click(function () {
-		aJ({
-			password: password.val(),
-			amount: amount.val(),
-			charge: charge.val(),
-			sender_address: sender.val(),
-			transaction_hash: hash.val(),
-			exchange: exchange.val(),
-			deposit_id: tid.val(),
-			uuid: uuid.val()
-		}, true);
 		var thatBtn = $(this);
 
 		showLoading($(this), loading);

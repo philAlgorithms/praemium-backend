@@ -59,7 +59,7 @@ class DepositController extends Controller
 		$user = auth()->user();
 		$admin = Admin::find($user->id);
 		
-		$deposits = Deposit::all();
+		$deposits = Deposit::latest('created_at')->get();
 
 
 		$scripts= [
@@ -88,7 +88,7 @@ class DepositController extends Controller
     {
 		$client = client();
 		
-		$deposits = $client->deposits()->get();
+		$deposits = $client->deposits()->latest('created_at')->get();
 
 		$scripts= [
 			'dashboard/js/plugins/datatables.js',

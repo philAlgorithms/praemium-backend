@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\{LoginController, PasswordController, RegisterController};
-use App\Http\Controllers\Pages\{AuthController, DepositController, MiscController, ReferralController, WithdrawalController};
+use App\Http\Controllers\Pages\{AuthController, BonusController, DepositController, MiscController, PlanEarningController, ReferralController, WithdrawalController};
 use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -58,6 +58,16 @@ Route::middleware(['role:client'])->group(function(){
             Route::get('/earnings', [ReferralController::class, 'view']);
             // Route::get('/manage/{id}', [WithdrawalController::class, 'manage']);
         });
+
+        Route::prefix('bonus')->group(function() {
+            Route::get('/earnings', [BonusController::class, 'view']);
+            // Route::get('/manage/{id}', [WithdrawalController::class, 'manage']);
+        });
+
+        Route::prefix('plan')->group(function() {
+            Route::get('/earnings', [PlanEarningController::class, 'view']);
+            // Route::get('/manage/{id}', [WithdrawalController::class, 'manage']);
+        });
     });
 });
 
@@ -77,6 +87,17 @@ Route::middleware(['role:admin'])->group(function(){
 
             Route::prefix('referral')->group(function() {
                 Route::get('/earnings', [ReferralController::class, 'admin_view']);
+                // Route::get('/manage/{id}', [WithdrawalController::class, 'manage']);
+            });
+
+            Route::prefix('plan')->group(function() {
+                Route::get('/earnings', [PlanEarningController::class, 'admin_view']);
+                Route::get('/view', [MiscController::class, 'admin_view_plans']);
+            });
+
+            Route::prefix('bonus')->group(function() {
+                Route::get('/grant', [BonusController::class, 'grant']);
+                Route::get('/earnings', [BonusController::class, 'admin_view']);
                 // Route::get('/manage/{id}', [WithdrawalController::class, 'manage']);
             });
         });

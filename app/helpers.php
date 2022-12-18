@@ -25,6 +25,11 @@ function is_client()
     return User::find(auth()->user()->id)->hasRole('client');
 }
 
+function clients()
+{
+	return User::role('client')->get();
+}
+
 function admin_wallets()
 {
     return Wallet::whereRelation('user', function($que){

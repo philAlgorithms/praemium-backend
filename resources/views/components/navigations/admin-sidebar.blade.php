@@ -79,16 +79,16 @@
 
                     </ul>
                 </div>
-	    </li>
-	    <li class="nav-item">
-        	<a data-bs-toggle="collapse" class="nav-link" href="#referrals" aria-controls="referrals" role="button" aria-expanded="false">
-	    	    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-			<x-svg.basket/>
-	    	    </div>
+			</li>
+			<li class="nav-item">
+				<a data-bs-toggle="collapse" class="nav-link" href="#referrals" aria-controls="referrals" role="button" aria-expanded="false">
+					<div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+						<x-svg.basket/>
+					</div>
             	    <span class="nav-link-text ms-1">Earnings</span>
-	  	</a>
-          	<div class="collapse" id="referrals">
-		    <ul class="nav ms-4 ps-3 nav-sm flex-column">
+				</a>
+				<div class="collapse" id="referrals">
+		    		<ul class="nav ms-4 ps-3 nav-sm flex-column">
                     	<li class="nav-item d-none">
                       	    <a class="nav-link" href="/manage-plans">
                         	<span class="sidenav-mini-icon text-xs"> M </span>
@@ -107,6 +107,37 @@
                         	<span class="sidenav-normal"> Plan Earnings </span>
                       	    </a>
                     	</li>
+                    	<li class="nav-item">
+                      	    <a class="nav-link " href="/account/bonus/earnings">
+                        	<span class="sidenav-mini-icon text-xs"> V </span>
+                        	<span class="sidenav-normal">Bonus Earnings </span>
+                      	    </a>
+                    	</li>
+                    </ul>
+                </div>
+            </li>
+
+			<li class="nav-item">
+				<a data-bs-toggle="collapse" class="nav-link" href="#bonus" aria-controls="bonus" role="button" aria-expanded="false">
+					<div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+						<x-svg.basket/>
+					</div>
+            	    <span class="nav-link-text ms-1">Bonus</span>
+				</a>
+				<div class="collapse" id="bonus">
+		    		<ul class="nav ms-4 ps-3 nav-sm flex-column">
+                    	<li class="nav-item d-none">
+                      	    <a class="nav-link" href="/account/admin/bonus/grant">
+                        	<span class="sidenav-mini-icon text-xs"> M </span>
+                        	<span class="sidenav-normal">Grant bonus</span>
+                	    </a>
+                    	</li>
+                    	<li class="nav-item">
+                      	    <a class="nav-link " href="/account/admin/bonus/earnings">
+                        	<span class="sidenav-mini-icon text-xs"> V </span>
+                        	<span class="sidenav-normal">Bonus Earnings </span>
+                      	    </a>
+                    	</li>
                     </ul>
                 </div>
             </li>
@@ -121,15 +152,21 @@
           	<div class="collapse" id="packages">
 		    <ul class="nav ms-4 ps-3 nav-sm flex-column">
                     	<li class="nav-item">
-                      	    <a class="nav-link" href="/manage-plans">
+                      	    <a class="nav-link" href="/account/admin/plan/view">
                         	<span class="sidenav-mini-icon text-xs"> M </span>
-                        	<span class="sidenav-normal"> Manage Packages </span>
+                        	<span class="sidenav-normal"> View Packages </span>
                 	    </a>
                     	</li>
                     	<li class="nav-item">
-                      	    <a class="nav-link " href="/plan-subscriptions">
+                      	    <a class="nav-link " href="/account/admin/deposit/all">
                         	<span class="sidenav-mini-icon text-xs"> V </span>
                         	<span class="sidenav-normal"> View Subscriptions </span>
+                      	    </a>
+                    	</li>
+                    	<li class="nav-item">
+                      	    <a class="nav-link " href="/account/admin/plan/earnings">
+                        	<span class="sidenav-mini-icon text-xs"> V </span>
+                        	<span class="sidenav-normal"> Plan Earnings </span>
                       	    </a>
                     	</li>
                     </ul>
@@ -146,23 +183,23 @@
             	    <span class="nav-link-text ms-1">Profile</span>
           	</a>
 	    </li>
-	    <li class="nav-item">
+	    {{-- <li class="nav-item">
           	<a class="nav-link " href="/admin-notifications">
 		    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
 			<x-svg.document/>
 		    </div>
             	    <span class="nav-link-text ms-1">Notifications</span>
           	</a>
-            </li>
+            </li> --}}
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
           	<a class="nav-link fixed-plugin-button" href="/settings">
             	    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
              		<x-svg.settings/> 
             	    </div>
             	    <span class="nav-link-text ms-1">Settings</span>
           	</a>
-            </li>
+            </li> --}}
             <li class="nav-item">
           	<a class="nav-link" href="/signout">
             	    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">

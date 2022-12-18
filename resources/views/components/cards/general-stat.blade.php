@@ -12,15 +12,15 @@
 		/>
 
 		<x-cards.stat
-		    text='Total Plan Earnings'
-		    :amount='dollar(client()->total_plan_earnings)'
+		    text='Total Bonus'
+		    :amount='dollar(client()->total_bonuses)'
 		    increment=""
 		    icon='fas fa-money-bill-alt'
 		/>
 
 		<x-cards.stat
 		    text='Referal bonus'
-		    :amount='dollar(client()->referral_earnings)'
+		    :amount='dollar(client()->total_referral_earnings)'
 		    increment=''
 		    icon='fas fa-hand-holding-usd'	
 		/>

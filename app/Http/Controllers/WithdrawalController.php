@@ -40,7 +40,7 @@ class WithdrawalController extends BaseController
         $amount = $request->amount;
         $coin = Coin::find($request->crypto_currency);
         $plan = Plan::find($request->plan);
-        $withdrawable_plan_earning = $plan->activeEarning($client);
+        $withdrawable_plan_earning = $plan->withdrawableAmount($client);
 
         if(abs($amount) > abs($withdrawable_plan_earning))
         {

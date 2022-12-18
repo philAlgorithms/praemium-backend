@@ -55,7 +55,7 @@ class WithdrawalController extends Controller
 		$user = auth()->user();
 		$admin = Admin::find($user->id);
 
-		$withdrawals = Withdrawal::all();
+		$withdrawals = Withdrawal::latest('created_at')->get();
 
 		$scripts= [
 			'dashboard/js/plugins/dragula/dragula.min.js',
@@ -114,7 +114,7 @@ class WithdrawalController extends Controller
     {
 		$client = client();
 		
-		$withdrawals = $client->withdrawals()->get();
+		$withdrawals = $client->withdrawals()->latest('created_at')->get();
 
 		$scripts= [
 			'dashboard/js/plugins/datatables.js',

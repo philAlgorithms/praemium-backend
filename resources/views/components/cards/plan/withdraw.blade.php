@@ -38,12 +38,16 @@
                 	<b><small>$</small>{{ noSigil($plan->totalReferralEarning($client)) }}</b> Referral earning
                     <hr class="horizontal dark">
                 </li>
-				<li class="mb-1">
-					<b><small></small>{{ noSigil($plan->totalWithdrawals($client)) }}</b> Plan Withdrawals 
+				<li>
+					<b><small>$</small>{{ noSigil(abs($plan->totalWithdrawals($client))) }}</b> Plan Withdrawals 
 					<hr class="horizontal dark">
 				</li>
-            	<li>
-                	{{-- <b><small>$</small>{{ noSigil($plan->activeEarning($client)) }}</b> Total active earning  --}}
+				<li>
+                	<b><small>$</small>{{ noSigil($plan->totalBonusEarning($client)) }}</b> Bonus Earning
+                    <hr class="horizontal dark">
+                </li>
+            	<li class="mb-1">
+                	<b><small>$</small>{{ noSigil($plan->withdrawableAmount($client)) }}</b> Withdrawable Amount
                     <hr class="horizontal dark">
                 </li>
             </ul>

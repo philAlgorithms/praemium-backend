@@ -25,6 +25,11 @@ class Plan extends Model
     	return $this->hasMany(Withdrawal::class);
     }
 
+    public function bonuses(): HasMany
+    {
+    	return $this->hasMany(Bonus::class);
+    }
+
     public function duration(){
     	return $this->belongsTo(Period::class);
     }
@@ -77,6 +82,16 @@ class Plan extends Model
         return array_sum($approved_withdrawals->pluck('amount')->toArray());
     }
 
+    public function referralEarning(Client $client)
+    {
+        return $client->referralEarningTransactions()
+                      ->whereHasMorph('transactionable', [ReferralEarning::class], function($query){
+                        $query->whereHas('deposit', function($que){
+                            $que->where('plan_id', $this->id);
+                        });
+                      });
+    }
+
     public function activeSubscriptions(Client $client)
     {
         return $client->planEarnings()->whereRelation('deposit', function($query){
@@ -87,6 +102,15 @@ class Plan extends Model
         });
     }
 
+    public function bonusTransactions($client)
+    {
+        return $client->bonusTransactions()->whereHasMorph('transactionable', [Bonus::class], function($query){
+            $query->whereRelation('plan', function($que){
+                $que->where('id', $this->id);
+            });
+        });
+    }
+
     public function subscriptionEarning(Client $client)
     {
         $plan_subscriptions = $this->activeSubscriptions($client);
@@ -94,15 +118,26 @@ class Plan extends Model
         return array_sum($plan_subscriptions->pluck('amount')->toArray());
     }
 
-    public function totalReferralEarning(Client $client)
+    public function totalBonusEarning(Client $client)
     {
-        return 0.00;
+        $bonus_transactions = $this->bonusTransactions($client);
+
+        return array_sum($bonus_transactions->pluck('amount')->toArray());
     }
 
-    public function activeEarning(Client $client)
+
+    public function totalReferralEarning(Client $client)
+    {
+        $referral_earning = $this->referralEarning($client);
+
+        return array_sum($referral_earning->pluck('amount')->toArray());
+    }
+
+    public function withdrawableAmount(Client $client)
     {
         return $this->subscriptionEarning($client) 
         + $this->totalReferralEarning($client)
+        + $this->totalBonusEarning($client)
         + $this->totalWithdrawals($client);
     }
 }

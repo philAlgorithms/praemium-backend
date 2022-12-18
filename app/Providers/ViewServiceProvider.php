@@ -44,22 +44,22 @@ class ViewServiceProvider extends ServiceProvider
         });
     }
     
-        private function endSubscriptions(Client $client)
-        {
-            $due_payments = $client->duePayments()->get();
-            
-            foreach($due_payments as $payment){
-                $payment->markAsEarned();
-            };
-        }
+    private function endSubscriptions(Client $client)
+    {
+        $due_payments = $client->duePayments()->get();
+        
+        foreach($due_payments as $payment){
+            $payment->markAsEarned();
+        };
+    }
 
-        private function deactivateSubscriptions(Client $client)
-        {
-            $active_subscriptions = $client->deposits()->where('earning_completed', 0)->get();
+    private function deactivateSubscriptions(Client $client)
+    {
+        $active_subscriptions = $client->deposits()->get();
 
-            foreach($active_subscriptions as $subscription)
-            {
-                $subscription->markAsCompleted();
-            }
+        foreach($active_subscriptions as $subscription)
+        {
+            $subscription->markAsCompleted();
         }
+    }
 }

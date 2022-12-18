@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Deposit;
 use App\Models\Plan;
-use App\Models\ReferralEarning;
+use App\Models\PlanEarning;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Codenixsv\CoinGeckoApi\CoinGeckoClient;
 
-class ReferralController extends Controller
+class PlanEarningController extends Controller
 {
     public function admin_view(Request $request){
         $scripts= [
@@ -24,9 +24,9 @@ class ReferralController extends Controller
         $user = auth()->user();
 		$admin = Admin::find($user->id);
 		
-        $earnings = ReferralEarning::latest('created_at')->get();
+        $earnings = PlanEarning::where('index', '!=', 0)->latest('pay_date')->get();
 
-        return view('dashboard.referral.all',compact(['admin', 'earnings', 'scripts']));
+        return view('dashboard.plan-earning.all',compact(['admin', 'earnings', 'scripts']));
     }
 
     public function view(Request $request){
@@ -37,9 +37,9 @@ class ReferralController extends Controller
 
         $client = client();
 		
-        $earnings = $client->referralEarnings()->latest('created_at')->get();
+        $earnings = $client->planEarnings()->where('index', '!=', 0)->latest('pay_date')->get();
 
-        return view('dashboard.referral.view',compact(['client', 'earnings', 'scripts']));
+        return view('dashboard.plan-earning.view',compact(['client', 'earnings', 'scripts']));
     }
 
     public function subscribe(Request $request){

@@ -94,9 +94,12 @@ class Deposit extends Model
             return $this->update([
                 'earning_completed' => 1
             ]);
+        }else{
+            $this->update([
+                'earning_completed' => 0
+            ]);
+            return false;
         }
-
-        else return false;
     }
 
     public function payReferral()
@@ -108,7 +111,7 @@ class Deposit extends Model
             $earning = $this->referralEarning()->create();
             try {
                 $transaction = $referrer->transactions()->create([
-                    'amount' => $this->transaction->amount/10,
+                    'amount' => $this->transaction->amount * 0.1,
                     'transactionable_id' => $earning->id,
                     'transactionable_type' => 'App\Models\ReferralEarning',
                     'status_id' => Status::firstWhere('key', env('STATUS_SUCCESSFUL'))->id,

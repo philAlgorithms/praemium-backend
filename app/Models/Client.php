@@ -25,16 +25,23 @@ class Client extends User
 
     public function deposits()
     {
-        $deposit_ids = $this->transactions()->pluck('transactionable_id')->toArray();
+        $deposit_ids = $this->transactions()->whereHasMorph('transactionable', [Deposit::class])->pluck('transactionable_id')->toArray();
 
         return Deposit::wherein('id', $deposit_ids);
     }
 
     public function withdrawals()
     {
-        $deposit_ids = $this->transactions()->pluck('transactionable_id')->toArray();
+        $withdrawal_ids = $this->transactions()->whereHasMorph('transactionable', [Withdrawal::class])->pluck('transactionable_id')->toArray();
 
-        return Withdrawal::wherein('id', $deposit_ids);
+        return Withdrawal::wherein('id', $withdrawal_ids);
+    }
+
+    public function bonuses()
+    {
+        $bonus_ids = $this->transactions()->whereHasMorph('transactionable', [Bonus::class])->pluck('transactionable_id')->toArray();
+
+        return Bonus::wherein('id', $bonus_ids);
     }
 
     public function country(): BelongsTo
@@ -63,7 +70,7 @@ class Client extends User
 
     public function referralEarnings()
     {
-        $earning_ids = $this->transactions()->where('transactionable_type', 'App\Models\ReferralEarning')->pluck('transactionable_id')->toArray();
+        $earning_ids = $this->transactions()->whereHasMorph('transactionable', [ReferralEarning::class])->pluck('transactionable_id')->toArray();
         return ReferralEarning::wherein('id', $earning_ids);
     }
 
@@ -104,9 +111,9 @@ class Client extends User
         return $this->transactionHasStatus($status)->whereHasMorph('transactionable', [Deposit::class]);
     }
 
-
     public function subscribe(Plan $plan, float $amount, Coin $coin)
     {
+        $amount = abs($amount);
         $deposit = Deposit::create(['plan_id' => $plan->id]);
 
         $transaction = $this->transactions()->create([
@@ -196,6 +203,14 @@ class Client extends User
         return $this->planEarnings()->where('earned', 1);
     }
 
+    public function completedEarnedSubscriptions()
+    {
+        return $this->earnedSubscriptions()
+                    ->whereRelation('deposit', function($query){
+                        $query->where('earning_completed', 1);
+                    });
+    }
+
     public function activePlans()
     {
         $now = (new \Datetime())->format('Y-m-d H:i:s');
@@ -206,6 +221,27 @@ class Client extends User
     
     // SUBSCRIPTION END
 
+    // BONUS START
+    public function bonusTransactions(): HasMany
+    {
+        return $this->transactions()->whereHasMorph('transactionable', [Bonus::class]);
+    }
+
+    public function grantBonus(float $amount, Plan $plan)
+    {
+        $amount = abs($amount);
+        $bonus = $plan->bonuses()->create();
+
+        $transaction = $this->transactions()->create([
+            'amount'=> $amount,
+            'transactionable_id' => $bonus->id,
+            'transactionable_type' => 'App\Models\Bonus',
+            'status_id' => Status::firstWhere('key', env('STATUS_SUCCESSFUL'))->id
+        ]);
+
+        return $transaction;
+    }
+    // BONUS END
 
     // WITHDRAWAL START
 
@@ -214,6 +250,7 @@ class Client extends User
         return $this->transactions()->whereHasMorph('transactionable', [Withdrawal::class]);
     }
 
+    
     public function withdrawalTransactionHasStatus(Status|string $status): HasMany
     {
         return $this->transactionHasStatus($status)->whereHasMorph('transactionable', [Withdrawal::class]);
@@ -237,6 +274,14 @@ class Client extends User
     }
     // WITHDRAWAL END
 
+    // REFERRAL START
+
+    public function referralEarningTransactions(): HasMany
+    {
+        return $this->transactions()->whereHasMorph('transactionable', [ReferralEarning::class]);
+    }
+    // REFERRAL END
+
     /**
      * CONCERNING FINANCE 
      */
@@ -254,11 +299,16 @@ class Client extends User
         return array_sum($this->earnedSubscriptions()->pluck('amount')->toArray());
     }
 
+    public function getTotalCompletedPlanEarningsAttribute()
+    {
+        return array_sum($this->completedEarnedSubscriptions()->pluck('amount')->toArray());
+    }
+
     public function getTotalWithdrawalsAttribute()
     {
-        $succesful_deposits = $this->withdrawalTransactionHasStatus(env('STATUS_SUCCESSFUL'));
+        $succesful_withdrawals = $this->withdrawalTransactionHasStatus(env('STATUS_SUCCESSFUL'));
         
-        return array_sum($succesful_deposits->pluck('amount')->toArray());
+        return array_sum($succesful_withdrawals->pluck('amount')->toArray());
     }
 
     public function getTotalExpenditureAttribute()
@@ -273,21 +323,36 @@ class Client extends User
 
         return $total_earnings = $total_plan_earnings + $total_referral_earnings;
     }
+
+    public function getTotalCompletedEarningsAttribute()
+    {
+        $total_completed_plan_earnings = $this->total_completed_plan_earnings;
+        $total_referral_earnings = $this->total_referral_earnings;
+
+        return $total_earnings = $total_completed_plan_earnings + $total_referral_earnings;
+    }
     
     public function getWithdrawableAmountAttribute()
     {
         $total_withdrawals = $this->total_withdrawals;
-        $total_earnings = $this->total_earnings;
+        $total_bonuses = $this->total_bonuses;
+        $total_completed_earnings = $this->total_completed__earnings;
 
-        return $total_earnings + $total_withdrawals;
+        return $total_completed_earnings + $total_bonuses + $total_withdrawals;
     }
 
     public function getTotalReferralEarningsAttribute()
     {
-        // $succesful_deposits = $this->withdrawalTransactionHasStatus(env('STATUS_SUCCESSFUL'));
+        $referral_earnings = $this->referralEarningTransactions();
         
-        // return array_sum($succesful_deposits->pluck('amount')->toArray());
-        return 0;
+        return array_sum($referral_earnings->pluck('amount')->toArray());
+    }
+
+    public function getTotalBonusesAttribute()
+    {
+        $bonuses = $this->bonusTransactions();
+        
+        return array_sum($bonuses->pluck('amount')->toArray());
     }
     // public function getActivePlanEarningsAttribute()
     // {
