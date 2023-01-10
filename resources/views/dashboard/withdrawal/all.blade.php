@@ -11,6 +11,7 @@
 		<div class="container-fluid py-4">
 			<div class="row">
 				<x-cards.general-stat />
+				p
 			</div>
 			<div class="row">
 			<x-tables.admin-withdrawals 

@@ -211,6 +211,16 @@ class Client extends User
                     });
     }
 
+    public function completedEarningPrincipals()
+    {
+        return $this->completedEarnedSubscriptions()->where('index', 0);
+    }
+
+    public function earnedInterests()
+    {
+        return $this->earnedSubscriptions()->whereNot('index', 0);
+    }
+
     public function activePlans()
     {
         $now = (new \Datetime())->format('Y-m-d H:i:s');
@@ -304,6 +314,14 @@ class Client extends User
         return array_sum($this->completedEarnedSubscriptions()->pluck('amount')->toArray());
     }
 
+    public function getTotalWithdrawablePlanEarningsAttribute()
+    {
+        $earned_interests_sum = array_sum($this->earnedInterests()->pluck('amount')->toArray());
+        $completed_principals = array_sum($this->completedEarningPrincipals()->pluck('amount')->toArray());
+
+        return $earned_interests_sum + $completed_principals;
+    }
+
     public function getTotalWithdrawalsAttribute()
     {
         $succesful_withdrawals = $this->withdrawalTransactionHasStatus(env('STATUS_SUCCESSFUL'));
@@ -336,9 +354,9 @@ class Client extends User
     {
         $total_withdrawals = $this->total_withdrawals;
         $total_bonuses = $this->total_bonuses;
-        $total_completed_earnings = $this->total_completed__earnings;
+        $total_withdrawable_plan_earnings = $this->total_withdrawable_plan_earnings;
 
-        return $total_completed_earnings + $total_bonuses + $total_withdrawals;
+        return $total_withdrawable_plan_earnings + $total_bonuses + $total_withdrawals;
     }
 
     public function getTotalReferralEarningsAttribute()

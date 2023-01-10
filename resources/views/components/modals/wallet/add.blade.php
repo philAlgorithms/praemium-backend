@@ -17,11 +17,11 @@
                             <div class="form-group">
                                 <label for="coins">Select Crypto Currency</label>
 				<select class="form-control js-choice" id="wallet-coin">
-				@php $coins = is_admin() ? \App\Models\CryptoCurrency::all() : acceptedCoins() @endphp
-                                @foreach ($coins as $i=>$coin)
-                                    <option value="{{ $coin->id }}" {{ $i===0 ? 'selected' : '' }}>{{ $coin->display_name }}</option>
-                                @endforeach
-                                </select>
+                @php $coins = is_admin() ? \App\Models\CryptoCurrency::all() : acceptedCoins() @endphp
+                @foreach ($coins as $i=>$coin)
+                    <option value="{{ $coin->id }}" {{ $i===0 ? 'selected' : '' }}>{{ $coin->display_name }}</option>
+                @endforeach
+                </select>
 			    </div>
 			    <input type="hidden" id="wallet-url" value="{{ $url }}" />
                             <div class="text-center">

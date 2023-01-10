@@ -7,7 +7,7 @@
 		pageTitle="Deposit History"
 		color="dark"
 	    />
-	</x-navigations.admintopbar>
+	</x-navigations.admin-topbar>
 	<div class="container-fluid py-4">
 	    <div class="row">
 		<x-cards.stat

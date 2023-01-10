@@ -102,6 +102,26 @@ class Plan extends Model
         });
     }
 
+    public function completedEarningPrincipals($client)
+    {
+        return $client->completedEarningPrincipals()
+                ->whereRelation('deposit', function($query){
+                    $query->whereRelation('plan', function($q){
+                        $q->where('id', $this->id);
+                    });
+                });
+    }
+
+    public function earnedInterests($client)
+    {
+        return $client->earnedInterests()
+                ->whereRelation('deposit', function($query){
+                    $query->whereRelation('plan', function($q){
+                        $q->where('id', $this->id);
+                    });
+                });
+    }
+
     public function bonusTransactions($client)
     {
         return $client->bonusTransactions()->whereHasMorph('transactionable', [Bonus::class], function($query){
@@ -111,11 +131,19 @@ class Plan extends Model
         });
     }
 
-    public function subscriptionEarning(Client $client)
+    public function oldSubscriptionEarning(Client $client)
     {
         $plan_subscriptions = $this->activeSubscriptions($client);
 
         return array_sum($plan_subscriptions->pluck('amount')->toArray());
+    }
+    
+    public function subscriptionEarning(Client $client)
+    {
+        $earned_interests_sum = array_sum($this->earnedInterests($client)->pluck('amount')->toArray());
+        $completed_principals = array_sum($this->completedEarningPrincipals($client)->pluck('amount')->toArray());
+
+        return $earned_interests_sum + $completed_principals;
     }
 
     public function totalBonusEarning(Client $client)
